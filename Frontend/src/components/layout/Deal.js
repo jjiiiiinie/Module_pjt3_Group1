@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Title from '../elements/UI/Title';
-import Tab from '../elements/UI/TabMenu';
+// import Tab from '../elements/UI/TabMenu';
 import ProductViews from '../elements/widgets/product/ProductViews';
 
 export default function Deal() {
 
-  const [ categoryName, setCategoryName ] = useState("fashion");
+  // const [ categoryName, setCategoryName ] = useState("fashion");
   let sliceNumber = 12;
   let columnNumber = 3;
   return(
@@ -17,7 +17,7 @@ export default function Deal() {
           categoryName = {categoryName} 
         />   */}
         <ProductViews 
-          categoryName = {categoryName}
+          // categoryName = {categoryName}
           sliceNumber = {sliceNumber}
           columnNumber = {columnNumber}
         />

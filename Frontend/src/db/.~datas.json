@@ -224,22 +224,6 @@
   ],
   "cart": [
     {
-      "id": "5",
-      "name": "Lorem ipsum female coat",
-      "image": [
-        "/assets/img/product/fashion/5.jpg",
-        "/assets/img/product/fashion/2.jpg",
-        "/assets/img/product/fashion/4.jpg",
-        "/assets/img/product/fashion/7.jpg",
-        "/assets/img/product/fashion/9.jpg"
-      ],
-      "price": 25.5,
-      "discount": 10,
-      "qty": 1,
-      "color": "brown",
-      "size": "m"
-    },
-    {
       "id": "3",
       "name": "Lorem ipsum jacket",
       "image": [
