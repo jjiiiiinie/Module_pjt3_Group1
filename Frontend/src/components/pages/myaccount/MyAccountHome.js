@@ -1,6 +1,7 @@
+import Login from './Login';
 import SignUp from './SignUp';
-import ChangePwd from './ChangePwd';
-import ModifyAddress from './ModifyAddress';
+// import ChangePwd from './ChangePwd';
+// import ModifyAddress from './ModifyAddress';
 
 export default function MyAccountHome() {
   return(
@@ -10,6 +11,7 @@ export default function MyAccountHome() {
           <div className="ml-auto mr-auto col-lg-9"> 
               <div className="myaccount-wrapper"> 
                 <div className="accordion" id="accordionPanelsStayOpenExample">
+                  <Login />
                   <SignUp />
                   {/* <ChangePwd />
                   <ModifyAddress /> */}
