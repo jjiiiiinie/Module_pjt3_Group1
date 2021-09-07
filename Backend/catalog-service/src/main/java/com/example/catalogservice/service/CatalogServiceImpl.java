@@ -48,7 +48,7 @@ public class CatalogServiceImpl implements CatalogService{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         CatalogEntity catalogEntity = mapper.map(catalogDto, CatalogEntity.class);
         //todo 디비에서 가져와서 creater, createAt 설정 => 다른 방안 찾아보기(여러 해결법있음)
-        CatalogEntity creater = repository.findById(catalogDto.getId()).get();
+        CatalogEntity creater = repository.findById(catalogDto.getProductId()).get();
         catalogEntity.setCreater(creater.getCreater());
         catalogEntity.setCreatedAt(creater.getCreatedAt());
         catalogEntity.setModifer("modifiedid");

@@ -15,7 +15,7 @@ public class CatalogEntity  implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long productId;
 
 //    @Column(nullable = false, length = 120, unique = true)
     @Column(nullable = false)

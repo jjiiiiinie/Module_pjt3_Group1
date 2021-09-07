@@ -57,7 +57,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         String token = Jwts.builder()
                         .claim("email", userDetails.getEmail())
-                        .claim("id", userDetails.getId())
                         .claim("userId", userDetails.getUserId())
 //                        .setSubject(userDetails.getEmail()).setSubject(String.valueOf(userDetails.getId())).setSubject(userDetails.getUserId())
                         .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
@@ -65,6 +64,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                         .compact();
         System.out.println(env.getProperty("token.secret"));
         response.addHeader("token", token);
-        response.addHeader("userId", userDetails.getUserId());
+        response.addHeader("userId", String.valueOf(userDetails.getUserId()));
     }
 }
