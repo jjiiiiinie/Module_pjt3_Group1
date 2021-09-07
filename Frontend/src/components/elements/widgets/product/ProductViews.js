@@ -86,7 +86,7 @@ export default function ProductViews({categoryName, sliceNumber, columnNumber}) 
           </Link>
           {/* 길이 꽉차게 */}
           <div className="product-action">
-            <div className="pro-same-action pro-cart">
+            <div className="col-8 pro-same-action pro-cart">
               <button 
                 disabled="" 
                 className="active"
@@ -95,7 +95,7 @@ export default function ProductViews({categoryName, sliceNumber, columnNumber}) 
               </button>
             </div>
             {/* 관리자만 볼 수 있음, 해당 상품 Delete */}
-            <div className="pro-same-action pro-quickview">
+            <div className="col-4 pro-same-action pro-delete">
               <button
                 value={item.id}
                 onClick=""

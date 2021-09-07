@@ -81,16 +81,7 @@
       "size": "s"
     }
   ],
-  "users": [
-    {
-      "id": 1,
-      "userId": "test12",
-      "password": "qetu1357!",
-      "name": "test12",
-      "email": "park940313@naver.com",
-      "phone": "01085274654"
-    }
-  ],
+  "users": [],
   "color": [
     {
       "id": 0,
@@ -231,56 +222,7 @@
       "rating": 3
     }
   ],
-  "cart": [
-    {
-      "id": "4",
-      "name": "Lorem ipsum fashion coat",
-      "image": [
-        "/assets/img/product/fashion/4.jpg",
-        "/assets/img/product/fashion/2.jpg",
-        "/assets/img/product/fashion/5.jpg",
-        "/assets/img/product/fashion/7.jpg",
-        "/assets/img/product/fashion/9.jpg"
-      ],
-      "price": 15.5,
-      "discount": 0,
-      "qty": 1,
-      "color": "blue",
-      "size": "m"
-    },
-    {
-      "id": "5",
-      "name": "Lorem ipsum female coat",
-      "image": [
-        "/assets/img/product/fashion/5.jpg",
-        "/assets/img/product/fashion/2.jpg",
-        "/assets/img/product/fashion/4.jpg",
-        "/assets/img/product/fashion/7.jpg",
-        "/assets/img/product/fashion/9.jpg"
-      ],
-      "price": 25.5,
-      "discount": 10,
-      "qty": 1,
-      "color": "brown",
-      "size": "m"
-    },
-    {
-      "id": "3",
-      "name": "Lorem ipsum jacket",
-      "image": [
-        "/assets/img/product/fashion/3.jpg",
-        "/assets/img/product/fashion/1.jpg",
-        "/assets/img/product/fashion/6.jpg",
-        "/assets/img/product/fashion/8.jpg",
-        "/assets/img/product/fashion/9.jpg"
-      ],
-      "price": 17.45,
-      "discount": 40,
-      "qty": 1,
-      "color": "brown",
-      "size": "All Sizes"
-    }
-  ],
+  "cart": [],
   "wish": [
     {
       "id": "4",

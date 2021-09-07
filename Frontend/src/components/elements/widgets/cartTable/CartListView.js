@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function CartListView({data, setCartDatas}) {
+export default function CartListView({data, setCartDatas, handleCheck, isChecked}) {
   
   var process = require('../../../../myprocess.json')
   
@@ -37,6 +37,14 @@ export default function CartListView({data, setCartDatas}) {
 
   return(
     <tr key={data.id}>
+    <td className="product-checkbox">
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value={data.id} defaultChecked checked={isChecked} onChange={handleCheck}/>
+        <label class="form-check-label d-none" for="">
+          {data.id}
+        </label>
+      </div>
+    </td>
       <td className="product-thumbnail">
       <Link to={`/productdetail/${data.id}`}><img className="img-fluid" src={data.image[0]} alt="" /></Link>
       </td>

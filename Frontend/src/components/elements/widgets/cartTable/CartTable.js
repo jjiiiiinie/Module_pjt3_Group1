@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import CartListView from "./CartListView";
 import CartTableFooter from "./CartTableFooter";
+import axios from "axios";
 
 export default function CartTable() {
 
-  const [ cartDatas, setCartDatas ] = useState([]);
-
   var process = require('../../../../myprocess.json');
+  const [ cartDatas, setCartDatas ] = useState([]);
+  const [ totalPrice, setTotalPrice ] = useState(0);
   
   useEffect(() => {
     fetch(`http://${process.IP}:${process.PORT}/cart`)
@@ -29,6 +30,7 @@ export default function CartTable() {
               <table>
                 <thead>
                   <tr>
+                    <th>Select</th>
                     <th>Image</th>
                     <th>Product Name</th>
                     <th>Unit Price</th>
@@ -43,6 +45,8 @@ export default function CartTable() {
                       <CartListView 
                         data = {item}
                         setCartDatas = {setCartDatas}
+                        // handleCheck = {handleCheck}
+                        // isChecked={isChecked}
                       />
                     ))
                   }
@@ -55,16 +59,20 @@ export default function CartTable() {
         <div className="row">
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
+              <div className="cart-select-all">
+                <button>Select All</button>
+              </div>
+              <div className="cart-delete-selected">
+                <button>Delete Selected</button>
+              </div>
+              <div className="col-4"/>
               <div className="cart-shiping-update">
                 <a href="/">Continue Shopping</a>
-              </div>
-              <div className="cart-clear">
-                <button>Clear Shopping Cart</button>
               </div>
             </div>
           </div>
         </div>
-        <CartTableFooter />
+          <CartTableFooter totalPrice = {totalPrice}/>
       </div>
     </div>
   );
