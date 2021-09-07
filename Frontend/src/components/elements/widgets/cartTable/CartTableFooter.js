@@ -35,7 +35,7 @@ export default function CartTableFooter() {
               </div>
               <div className="tax-select">
                 <label>* Zip/Postal Code</label>
-                <input type="text" />
+                 type="text" />
               </div>
               <button className="cart-btn-2" type="submit">Get A Quote</button>
             </div>
@@ -51,7 +51,7 @@ export default function CartTableFooter() {
           <div className="discount-code">
             <p>Enter your coupon code if you have one.</p>
             <form>
-              <input type="text" required="" name="name" />
+               type="text" required="" name="name" />
               <button className="cart-btn-2" type="submit">Apply Coupon</button>
             </form>
           </div>
