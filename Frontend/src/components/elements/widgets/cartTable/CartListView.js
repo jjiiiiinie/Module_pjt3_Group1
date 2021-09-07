@@ -8,6 +8,7 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
   const [ count, setCount ] = useState(data.qty);
 
   const minusClick = () => {
+    // 장바구니 데이터 UPDATE
     if(count==1) {
       alert('1개 미만으로는 주문할 수 없습니다')
     }
@@ -17,6 +18,7 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
   }
 
   const plusClick = () => {
+    // 장바구니 데이터 UPDATE
     setCount(count+1)
   }
 
