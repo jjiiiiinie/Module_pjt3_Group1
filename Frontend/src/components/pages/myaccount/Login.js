@@ -13,11 +13,13 @@ export default function Login() {
       'email':values.email,
       'password':values.password
     }
+    
     var config={
       header:{
         'Content-Type' : 'application/json',
       }
     }
+    // axios.post(url, User, config, {withCredentials: true})
     axios.post(url, User, config)
     .then((res)=>{
       alert("로그인성공")
