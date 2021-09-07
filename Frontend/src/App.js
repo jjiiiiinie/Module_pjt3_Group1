@@ -29,13 +29,14 @@ import store from './redux/Store';
 
 import axios from 'axios';
 
+
 function App()  {
   axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
 
   return (
     <BrowserRouter>
       <ToTop>
-        <Switch>   
+        <Switch>             
           <Route exact path="/"><Home /></Route>
           {/* <Route exact path="/features"><Features /></Route> */}
           <Route exact path="/pricing"><Pricing /></Route>

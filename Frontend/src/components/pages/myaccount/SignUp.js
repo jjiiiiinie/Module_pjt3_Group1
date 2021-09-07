@@ -82,9 +82,9 @@ export default function SignUp() {
   // },[process.IP, process.PORT]);
 
   const join = (e) => {
-    // let emailpattern = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()¥[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    // let pwdpattern = /^.*(?=.{8,20})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).*$/;
-    // let telpattern = /^[0-9\b -]{0,13}$/;
+    let emailpattern = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()¥[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
+    let pwdpattern = /^.*(?=.{8,20})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).*$/;
+    let telpattern = /^[0-9\b -]{0,13}$/;
     let url = '/user-service/users'
     let User = {
       'email' : values.email,
@@ -97,18 +97,18 @@ export default function SignUp() {
         'Content-Type' : 'application/json',
       }
     };
-    // if(emailpattern.test(values.email)===false){
-    //   alert("이메일 형식에 맞게 작성해 주세요.")
-    //   return;
-    // }
-    // if(pwdpattern.test(values.pwd)===false){
-    //   alert("숫자,문자,특수문자를 조합해서 최소 8자 이상 입력해 주세요.")
-    //   return;
-    // }
-    // if(telpattern.test(values.tel)===false){
-    //   alert("숫자만 입력해 주세요.( ex : 01098765432 )")
-    //   return;
-    // }
+    if(emailpattern.test(values.email)===false){
+      alert("이메일 형식에 맞게 작성해 주세요.")
+      return;
+    }
+    if(pwdpattern.test(values.pwd)===false){
+      alert("숫자,문자,특수문자를 조합해서 최소 8자 이상 입력해 주세요.")
+      return;
+    }
+    if(telpattern.test(values.tel)===false){
+      alert("숫자만 입력해 주세요.( ex : 01098765432 )")
+      return;
+    }
     axios.post(url, User, config)
     .then((res)=>{
       alert("회원가입완료")
