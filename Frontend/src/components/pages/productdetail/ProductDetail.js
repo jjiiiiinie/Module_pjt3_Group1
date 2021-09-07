@@ -30,6 +30,7 @@ export default function ProductDetail() {
       <Bread
         productName = {productData.name}
         productUrl = {`/productdetail/${productData.id}`}
+        hi
       />
       <ProductTop />
       <DetailInformation />
