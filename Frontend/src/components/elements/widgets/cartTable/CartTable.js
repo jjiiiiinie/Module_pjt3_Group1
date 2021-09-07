@@ -7,6 +7,8 @@ export default function CartTable() {
 
   var process = require('../../../../myprocess.json');
   const [ cartDatas, setCartDatas ] = useState([]);
+  const [ isCheckAll, setIsCheckAll ] = useState(false);
+  const [ isCheck, setIsCheck ] = useState([]);
   const [ totalPrice, setTotalPrice ] = useState(0);
   
   useEffect(() => {
@@ -19,6 +21,22 @@ export default function CartTable() {
     })
     // .catch(error => console.log(error));
   },[process.IP, process.PORT]);
+
+  const handleSelectAll = e => {
+    setIsCheckAll(!isCheckAll);
+    setIsCheck(cartDatas.map(li => li.id));
+    if (isCheckAll) {
+      setIsCheck([]);
+    }
+  };
+
+  const handleCheck = e => {
+    const { id, checked } = e.target;
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter(item => item !== id));
+    }
+  };
 
   return(
     <div className="cart-main-area pt-90 pb-100">
@@ -45,8 +63,8 @@ export default function CartTable() {
                       <CartListView 
                         data = {item}
                         setCartDatas = {setCartDatas}
-                        // handleCheck = {handleCheck}
-                        // isChecked={isChecked}
+                        handleCheck = {handleCheck}
+                        isChecked = {isCheck.includes(item.id)}
                       />
                     ))
                   }
@@ -59,14 +77,15 @@ export default function CartTable() {
         <div className="row">
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
-              <div className="cart-select-all">
-                <button>Select All</button>
+              <div className="col-2 row align-items-center cart-select-all">
+                <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input>
+                <label className="col-8 m-0">Select All</label>
               </div>
-              <div className="cart-delete-selected">
+              <div className="col-3 cart-delete-selected">
                 <button>Delete Selected</button>
               </div>
-              <div className="col-4"/>
-              <div className="cart-shiping-update">
+              <div className="col-4"></div>
+              <div className="col-3 px-0 cart-shiping-update">
                 <a href="/">Continue Shopping</a>
               </div>
             </div>

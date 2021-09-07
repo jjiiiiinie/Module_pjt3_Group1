@@ -38,9 +38,9 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
   return(
     <tr key={data.id}>
     <td className="product-checkbox">
-      <div class="form-check">
-        <input class="form-check-input" type="checkbox" value={data.id} defaultChecked checked={isChecked} onChange={handleCheck}/>
-        <label class="form-check-label d-none" for="">
+      <div className="form-check">
+        <input id={data.id} className="form-check-input" type="checkbox" value={data.id} checked={isChecked} onChange={handleCheck}/>
+        <label className="form-check-label d-none">
           {data.id}
         </label>
       </div>
