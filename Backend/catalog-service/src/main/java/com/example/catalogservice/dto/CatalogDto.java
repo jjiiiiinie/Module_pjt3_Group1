@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @Data
 public class CatalogDto implements Serializable {
 
-    private Long id;
+    private Long productId;
 
     private String category;
 
@@ -53,6 +53,6 @@ public class CatalogDto implements Serializable {
     private Integer qty;
     private Integer totalPrice;
 
-    private String orderId;
+//    private String orderId;
     private String userId;
 }

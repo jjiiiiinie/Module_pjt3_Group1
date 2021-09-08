@@ -3,12 +3,13 @@ package com.example.catalogservice.vo;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ResponseCatalog {
-    private Long id;
+public class ResponseCatalog implements Serializable {
+    private Long productId;
 
     private String category;
 

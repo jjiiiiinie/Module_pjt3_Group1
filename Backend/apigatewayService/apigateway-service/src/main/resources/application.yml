@@ -102,6 +102,13 @@ spring:
             - Path=/order-service/**
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\{segment}
+        - id: cart-service
+          uri: lb://CART-SERVICE
+          predicates:
+            - Path=/cart-service/**
+          filters:
+            - RewritePath=/cart-service/(?<segment>.*), /$\{segment}
+
 
 
 management:

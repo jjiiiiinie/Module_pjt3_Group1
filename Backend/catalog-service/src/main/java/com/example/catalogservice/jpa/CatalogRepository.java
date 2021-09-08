@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface CatalogRepository extends CrudRepository<CatalogEntity, Long> {
     List<CatalogEntity> findByCategory(String category);
-    CatalogEntity findByProductNameLike(String productName);
+    List<CatalogEntity> findByProductNameContaining(String productName);
     List<CatalogEntity> findByPublishDateBetween(LocalDate start, LocalDate end);
 }
