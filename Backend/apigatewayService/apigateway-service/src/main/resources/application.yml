@@ -110,6 +110,7 @@ spring:
             - RewritePath=/cart-service/(?<segment>.*), /$\{segment}
 
 
+
 management:
   endpoints:
     web:

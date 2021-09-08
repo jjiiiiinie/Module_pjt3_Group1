@@ -9,6 +9,7 @@ import lombok.Data;
 public class ResponseCart {
     private Long cartId;
     private Long productId;
+    private String productName;
     private Integer qty;
     private Integer unitPrice;
     private Integer totalPrice;

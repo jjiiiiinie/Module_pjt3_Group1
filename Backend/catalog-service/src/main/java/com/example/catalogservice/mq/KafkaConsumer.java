@@ -19,7 +19,6 @@ import java.util.Map;
 public class KafkaConsumer {
     private final CatalogRepository repository;
 
-    //todo 다바꾸기 카테고리 아이디가 카테고리 이자 아이디키 엿음
     @KafkaListener(topics = "order-catalog-stock-topic")
     public void updateQty(String kafkaMessage){ // {"productId" : "CATALOG-001", "qty":40, ..}
         log.info("kafka Message -> " + kafkaMessage);

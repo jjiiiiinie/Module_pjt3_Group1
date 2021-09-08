@@ -39,7 +39,7 @@ public class CatalogController {
 
     @GetMapping("/health_check")
     public String status(HttpServletRequest request){
-        return String.format("It's Working in Catalog SErvice on Port %s", request.getServerPort());
+        return String.format("It's Working in Catalog Service on Port %s", request.getServerPort());
     }
 
     @ApiOperation(value="전체 상품 목록", notes="전체 상품 목록")
@@ -69,10 +69,13 @@ public class CatalogController {
 
     @ApiOperation(value="상품 등록", notes="상품 등록")
     @PostMapping("/catalogs")
-    public ResponseEntity createCatalogs(@RequestBody @Valid RequestCatalog catalog){
+    public ResponseEntity createCatalogs(@RequestBody @Valid RequestCatalog catalog, HttpServletRequest request){
         //todo 이미지 받고 경로설정
-        //todo 책 중복 검사(isbn 등) or 권한 검사(only admin)
+        //todo 책 중복 검사(isbn 등) or 권한 검사(only admin) => 원래 apigateway에서 filter에 auth(jwt 검증) 추가해서 확인해도됨
+        //todo 에러 메세지
 
+        // email == "admin"일 때나 apigateway를 거쳐서 헤더값을 받아서 처리
+        log.info(request.getHeader("email"));
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         CatalogDto catalogDto = mapper.map(catalog, CatalogDto.class);

@@ -11,6 +11,7 @@ import com.example.orderservice.service.OrdersService;
 import com.example.orderservice.vo.RequestOrder;
 import com.example.orderservice.vo.ResponseCatalog;
 import com.example.orderservice.vo.ResponseOrder;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -38,6 +39,7 @@ public class OrderController {
 //    private final OrderProducer orderProducer;
     private final Environment env;
 
+    @ApiOperation(value="결제 하기", notes="결제 하기")
     @PostMapping(value="/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> createOrder(@PathVariable("userId") Long userId, @RequestBody RequestOrder requestOrder, HttpServletRequest req){
 
@@ -100,6 +102,7 @@ public class OrderController {
         }
     }
 
+    @ApiOperation(value="내역 조회", notes="사용자 주문 내역 조회")
     @GetMapping(value= "/{userId}/orders")
     public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") Long userId) throws Exception{
         log.info("Before retrieve orders data");

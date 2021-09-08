@@ -13,7 +13,7 @@ import java.util.Date;
 public class CartEntity implements Serializable {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long cartId;
 
     @Column(nullable = false)

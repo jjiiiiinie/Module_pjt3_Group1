@@ -7,6 +7,7 @@ import com.example.cartservice.service.CartService;
 import com.example.cartservice.vo.RequestCart;
 import com.example.cartservice.vo.ResponseCatalog;
 import com.example.cartservice.vo.ResponseCart;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -31,26 +32,32 @@ public class CartController {
 //    private final OrderProducer orderProducer;
     private final Environment env;
 
+    @ApiOperation(value="장바구니 상품 목록", notes="장바구니 상품 목록을 보여줍니다.")
     @GetMapping(value = "/carts/user/{userId}")
     public ResponseEntity<List<ResponseCart>> getCarts( @PathVariable("userId") Long userId){
         List<CartDto> cartDtoList = cartService.getCartByUserId(userId);
         List<ResponseCart> result = new ArrayList<>();
         //log.info("After retrieve catalgos data");
         cartDtoList.forEach(v -> {
-            result.add(new ModelMapper().map(v, ResponseCart.class));
+            ResponseCart responseCart = new ModelMapper().map(v, ResponseCart.class);
+            responseCart.setProductName(catalogServiceClient.getCatalog(v.getProductId()).getProductName());
+            result.add(responseCart);
         });
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
     }
 
+    @ApiOperation(value="장바구니 상세 조회", notes="장바구니 상세 조회를 합니다.")
     @GetMapping(value = "/carts/{cartId}")
     public ResponseEntity<ResponseCart> getCart( @PathVariable("cartId") Long cartId){
         CartDto cartDto = cartService.getCartByCartId(cartId);
         ResponseCart responseCart = new ModelMapper().map(cartDto, ResponseCart.class);
+        responseCart.setProductName(catalogServiceClient.getCatalog(responseCart.getProductId()).getProductName());
 
         return ResponseEntity.status(HttpStatus.OK).body(responseCart);
     }
 
+    @ApiOperation(value="상품 등록", notes="상품 등록에는 category, productName, writer, translator, publishingCompany, publishDate, content, unitPrice, deliveryFee, stock, pages, weight, size, isbn10, isbn13 의 정보가 필요 합니다.")
     @PostMapping(value="/carts")
     public ResponseEntity<ResponseCart> createCart(@RequestBody RequestCart requestCart){
 
@@ -84,7 +91,7 @@ public class CartController {
 //            orderDto.setInstanceId(String.format("%s : %s",env.getProperty("spring.cloud.client.hostname"), env.getProperty("local.server.port")));
 //            kafkaProducer.send("example-catalog-topic", orderDto);
             ResponseCart responseCart = modelMapper.map(cartDto, ResponseCart.class);
-
+            responseCart.setProductName(catalogServiceClient.getCatalog(responseCart.getProductId()).getProductName());
 //            orderProducer.send("orders", orderDto);
 
             log.info("After added orders data");
@@ -97,6 +104,7 @@ public class CartController {
 
     }
 
+    @ApiOperation(value="장바구니 삭제", notes="장바구니 삭제를 합니다.")
     @DeleteMapping(value= "/carts/{cartId}")
     public ResponseEntity deleteCart(@PathVariable("cartId") Long cartId) {
         //TODO 예외 처리
@@ -104,6 +112,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
+    @ApiOperation(value="장바구니 수정(주문)", notes="장바구니 수정(주문)을 합니다.")
     //주문(구매)하기 버튼 >> 카트 내용 수정, 내용 수정 된 값 카프카로 오더에게 보내기
     @PutMapping(value = "/carts")
     public ResponseEntity updateAndPayCart(@RequestBody List<RequestCart> requestCartList){
@@ -127,6 +136,7 @@ public class CartController {
                 CartDto createDto = cartService.createCart(cartDto);
 
                 ResponseCart responseCart = modelMapper.map(createDto, ResponseCart.class);
+                responseCart.setProductName(catalogServiceClient.getCatalog(responseCart.getProductId()).getProductName());
                 responseCartList.add(responseCart);
 
 //                kafkaProducer.send("cart2orderByPay", createDto);
