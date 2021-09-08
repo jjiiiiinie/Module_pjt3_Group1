@@ -5,7 +5,6 @@ import axios from "axios";
 
 export default function CartTable() {
 
-  var process = require('../../../../myprocess.json');
   const [ cartDatas, setCartDatas ] = useState([]);
   // isCheckAll: 장바구니 항목 전체 선택 여부 (default: false)
   const [ isCheckAll, setIsCheckAll ] = useState(false);
@@ -16,28 +15,25 @@ export default function CartTable() {
   
   // 장바구니 데이터 GET
   useEffect(() => {
-    fetch(`http://${process.IP}:${process.PORT}/cart`)
+    axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
     .then(res => {
-      return res.json();
+      setCartDatas(res.data)
+      console.log(res.data)
     })
-    .then(data => {
-      setCartDatas(data);
-    })
-    // .catch(error => console.log(error));
-  },[process.IP, process.PORT]);
-  
-  // 
+    .catch(error => console.log(error));
+  },[]);
+
   useEffect(() => {
     var sum = 0;
     isCheck.forEach(id => {
-      cartDatas.filter(data => data.id  === id).map(item =>{
-        sum += parseFloat((item.price * ((100-item.discount)/100)).toFixed(2));
+      cartDatas.filter(data => data.id  === id).map(data =>{
+        sum += cartDatas.unitPrice * cartDatas.qty;
       });
     });
     setTotalPrice(sum);
   },[isCheck, cartDatas]);
 
-  const handleSelectAll = e => {
+  const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     setIsCheck(cartDatas.map(li => li.id));
     if (isCheckAll) {
@@ -45,36 +41,35 @@ export default function CartTable() {
     }
   };
 
-  const handleCheck = e => {
+  const handleCheck = (e) => {
     const { id, checked } = e.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
+      setIsCheck(isCheck.filter(cartDatas => cartDatas !== id));
     }
   };
 
   const handleCheckDelete = () =>{
     isCheck.forEach(id => {
-      console.log(id)
-      // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
-      //   method: "DELETE"
-      // }).then(
-      //   alert("삭제되었습니다."),
-      //   fetch(`http://${process.IP}:${process.PORT}/cart`)
-      //   .then(res => {
-      //     return res.json();
-      //   })
-      //   .then(data => {
-      //     setCartDatas(data);
-      //   })
-      // )
-  })
-};
-
+      fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
+        method: "DELETE"
+      }).then(
+        alert("삭제되었습니다."),
+        fetch(`http://${process.IP}:${process.PORT}/cart`)
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          setCartDatas(data);
+        })
+      )
+    })
+  };
+  
   return(
     <div className="cart-main-area pt-90 pb-100">
       <div className="container">
-        <h3 className="cart-page-title">Your cart items</h3>
+        <h3 className="cart-page-title">Your cart cartDatass</h3>
         <div className="row">
           <div className="col-12">
             <div className="table-content table-responsive cart-table-content">
@@ -92,12 +87,12 @@ export default function CartTable() {
                 </thead>
                 <tbody>
                   {
-                    cartDatas.map(item => (
+                    cartDatas.map(cartDatas => (
                       <CartListView 
-                        data = {item}
+                        data = {cartDatas}
                         setCartDatas = {setCartDatas}
                         handleCheck = {handleCheck}
-                        isChecked = {isCheck.includes(item.id)}
+                        isChecked = {isCheck.includes(cartDatas.cartId)}
                       />
                     ))
                   }
@@ -110,7 +105,7 @@ export default function CartTable() {
         <div className="row">
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
-              <div className="col-3 row align-items-center cart-select-all">
+              <div className="col-3 row align-cartDatass-center cart-select-all">
                 <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input>
                 <label className="col-8 m-0">Select All</label>
               </div>

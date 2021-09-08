@@ -27,6 +27,7 @@ import axios from 'axios';
 
 function App()  {
   axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
+  // axios.defaults.baseURL = 'http://localhost:8000' // 내 서버
 
   return (
     <BrowserRouter>
