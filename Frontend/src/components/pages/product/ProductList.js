@@ -10,7 +10,6 @@ import Shop from "../../elements/widgets/productlist/Shop";
 export default function ProductList() {
 
   const [ categoryName, setCategoryName ] = useState("");
-  const [ colorName, setColorName ] = useState("");
 
   return(
     <div id="wrap">
@@ -21,11 +20,9 @@ export default function ProductList() {
           <div className="row">
             <SideBar 
               setCategoryName = {setCategoryName} 
-              setColorName = {setColorName}
             />
             <Shop 
               categoryName = {categoryName}
-              colorName = {colorName}
             />
           </div>
         </div>

@@ -1,8 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
 
-export default function AddBuyAndCart({data, color, size}) {
-
-  var process = require('../../../../../myprocess.json');
+export default function AddBuyAndCart({stock, productId, unitPrice}) {
 
   const [ count, setCount ] = useState(1);
 
@@ -19,57 +18,27 @@ export default function AddBuyAndCart({data, color, size}) {
     }
   }
 
-
-  const handlePutCompareList = () => {
-    fetch(`http://${process.IP}:${process.PORT}/compare`, {
-      method: "POST",
-      headers: {
+  const handlePutCartList = (e) => {
+    let url = '/cart-service/carts'
+    let Item = {
+      'productId' : productId,
+      'qty' : count,
+      'unitPrice' : unitPrice,
+      'totalPrice' : count * unitPrice,
+      'userId' : 1
+    }
+    var config = {
+      headers:{
         "Content-Type" : "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-        name: data.name,
-        image: data.image,
-        price: data.price,
-        discount: data.discount,
-        shortDescription : data.shortDescription,
-        rating : data.rating
-      })
-    })
-  }
-
-  const handlePutWishList = () => {
-    fetch(`http://${process.IP}:${process.PORT}/wish`, {
-      method: "POST",
-      headers: {
-        "Content-Type" : "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-        name: data.name,
-        image: data.image,
-        price: data.price,
-        discount: data.discount
-      })
-    })
-  }
-
-  const handlePutCartList = () => {
-    fetch(`http://${process.IP}:${process.PORT}/test`, {
-      method: "POST",
-      headers: {
-        "Content-Type" : "application/json",
-      },
-      body: JSON.stringify({
-        id: data.id,
-        name: data.name,
-        image: data.image,
-        price: data.price,
-        discount: data.discount,
-        qty: count,
-        color: color,
-        size: size
-      })
+      }
+    }
+    axios.post(url, Item, config)
+    .then((res) => {
+      alert("카트에 상품이 담겼습니다.")
+      console.log(res)
+    }).catch((err) => {
+      alert("상품 담기 실패")
+      console.log(err);
     })
   }
 
@@ -87,7 +56,7 @@ export default function AddBuyAndCart({data, color, size}) {
         <a href="/">Buy Now</a>
       </div>
       <div className="pro-details-cart btn-hover ml-0">
-        재고수량 : 
+        재고수량 : {stock}
       </div>
     </div>
   );

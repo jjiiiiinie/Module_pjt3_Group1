@@ -5,6 +5,9 @@ import Bread from "../productdetail/Bread";
 import ProductNewDetail from "./ProductNewDetail";
 import Footer from "../../layout/Footer";
 
+// update
+// `/catalog-service/catalogs/{productId}`
+
 export default function ProductNew() {
   return (
     <Fragment>
