@@ -17,6 +17,20 @@ export default function CartTable() {
   const [checkItems, setCheckItems] = useState([]);
 
   // 장바구니 데이터 GET
+  /* 'cartDatas' 포맷
+    [
+      {
+        "id": "5",
+        "name": "Lorem ipsum female coat",
+        "image": ["", ""],
+        "price": 25.5,
+        "discount": 10,
+        "qty": 1,
+        "color": "brown",
+        "size": "m"
+      },
+    ]
+  */
   useEffect(() => {
     fetch(`http://${process.IP}:${process.PORT}/cart`)
       .then(res => {
@@ -58,6 +72,7 @@ export default function CartTable() {
     }
   };
 
+  // 선택한 장바구니 항목별 삭제 DELETE 요청
   const handleCheckDelete = () => {
     isCheck.forEach(id => {
       // console.log(id)

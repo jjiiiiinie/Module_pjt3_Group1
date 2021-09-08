@@ -1,9 +1,30 @@
+import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
+import Modal from 'react-bootstrap/Modal';
 
 export default function ShipmentForm() {
+    const [show, setShow] = useState(false);
+    const [shipInfo, setShipInfo] = useState([]);
 
-    const onCompletePost = (data) => {
-        console.log(data.address);
+    const handleShow = () => setShow(true);
+    const handleClose = () => setShow(false);
+
+    const handleComplete = (data) => {
+        var fullAddress = data.address;
+        var extraAddress = '';
+        if (data.addressType === 'R') {
+            if (data.bname !== '') {
+                extraAddress += data.bname;
+            }
+            if (data.buildingName !== '') {
+                extraAddress += (extraAddress !== '' ? `, ${data.buildingName}` : data.buildingName);
+            }
+            fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
+        }
+        console.log(fullAddress);
+        // setShipInfo({ ...shipInfo, address: `${fullAddress}` });
+        // console.log(shipInfo);
+        handleClose();
     }
 
     const handleChangeForm = () => {
@@ -26,28 +47,26 @@ export default function ShipmentForm() {
                     </div>
                     <div className="col-lg-12 col-md-12">
                         <div className="billing-info">
-                            <button type="button" className="btn btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <button className="btn btn-secondary my-1" variant="primary" onClick={handleShow}>
                                 주소 찾기
                             </button>
-                            <div className="modal" id="myModal">
-                                <div className="modal-dialog">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h4 className="data-wrapper">주소 찾기</h4>
-                                            <button type="button" className="close" data-bs-dismiss="modal">&times;</button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <DaumPostcode autoClose onComplete={onCompletePost} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <Modal className="modal" show={show} onHide={handleClose}>
+                                <Modal.Header className="modal-header" closeButton>
+                                    <Modal.Title>
+                                        <h4 className="data-wrapper">주소 찾기</h4>
+                                    </Modal.Title>
+                                </Modal.Header>
+                                <Modal.Body className="modal-body">
+                                    <DaumPostcode autoClose onComplete={handleComplete} />
+                                </Modal.Body>
+                            </Modal>
                             <div className="billing-info">
                                 <label>주소</label>
                                 <input
                                     type="text"
                                     name="addressPrimary"
                                     onChange={handleChangeForm}
+                                    readOnly
                                 />
                             </div>
 

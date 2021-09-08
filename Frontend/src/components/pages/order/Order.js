@@ -14,7 +14,8 @@ export default function Order() {
 
   useEffect(() => {
     var arr = [];
-    arr = location.state.prop.map(item => item);
+    if (location.state !== undefined)
+      arr = location.state.prop.map(item => item);
     setOrderItems([...arr]);
   }, []);
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function OrderListView({ data, setCartDatas, handleCheck, isChecked }) {
+export default function OrderListView({ data }) {
 
   const [count, setCount] = useState(data.qty);
 
