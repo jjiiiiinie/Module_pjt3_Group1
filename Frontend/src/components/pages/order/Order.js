@@ -8,7 +8,7 @@ import OrderTable from './OrderTable'
 import OrderFormContainer from './OrderFormContainer';
 
 export default function Order() {
-  // CartTableFooter'react-router-dom' > {Link}의 parameter로 변수 받기 위해 location 사용
+  // CartTableFooter > {Link to='/order'}의 매개변수로 장바구니에서 선택한 항목 받음
   const location = useLocation();
   const [orderItems, setOrderItems] = useState([]);
 
@@ -24,7 +24,7 @@ export default function Order() {
       <Nav />
       <Bread productName="ORDER" />
       <OrderTable orderItems={orderItems} />
-      <OrderFormContainer />
+      <OrderFormContainer orderItems={orderItems} />
       <Footer />
     </div>
   );

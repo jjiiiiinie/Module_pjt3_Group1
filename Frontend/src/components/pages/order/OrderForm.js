@@ -1,9 +1,10 @@
 import React from 'react';
 
-export default function OrderForm() {
+export default function OrderForm({ orderInfo, setOrderInfo }) {
 
-    const handleChangeForm = () => {
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setOrderInfo({ ...orderInfo, [name]: value });
     }
 
     return (
@@ -16,7 +17,7 @@ export default function OrderForm() {
                             <input
                                 type="text"
                                 name="senderName"
-                                onChange={handleChangeForm}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -26,7 +27,7 @@ export default function OrderForm() {
                             <input
                                 type="tel"
                                 name="senderPhone"
-                                onChange={handleChangeForm}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -36,7 +37,7 @@ export default function OrderForm() {
                             <input
                                 type="password"
                                 name="senderPassword"
-                                onChange={handleChangeForm}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -44,5 +45,4 @@ export default function OrderForm() {
             </div>
         </div>
     )
-
 }

@@ -1,8 +1,11 @@
+import { useState } from 'react';
+
 import ShipmentForm from './ShipmentForm';
 import OrderForm from './OrderForm';
 import PaymentForm from './PaymentForm';
 
-export default function OrderFormContainer() {
+export default function OrderFormContainer({orderItems}) {
+  const [orderInfo, setOrderInfo] = useState({});
 
   return (
     <div className="myaccount-area pb-80 pt-100">
@@ -18,7 +21,7 @@ export default function OrderFormContainer() {
                     </button>
                   </div>
                   <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
-                    <ShipmentForm />
+                    <ShipmentForm orderInfo={orderInfo} setOrderInfo={setOrderInfo} />
                   </div>
                 </div>
                 <div className="accordion-item single-my-account mb-20 card">
@@ -28,7 +31,7 @@ export default function OrderFormContainer() {
                     </button>
                   </div>
                   <div id="panelsStayOpen-collapseTwo" className="accordion-collapse collapse hide" aria-labelledby="panelsStayOpen-headingTwo">
-                    <OrderForm />
+                    <OrderForm orderInfo={orderInfo} setOrderInfo={setOrderInfo} />
                   </div>
                 </div>
                 <div className="accordion-item single-my-account mb-20 card">
@@ -38,7 +41,7 @@ export default function OrderFormContainer() {
                     </button>
                   </div>
                   <div id="panelsStayOpen-collapseThree" className="accordion-collapse collapse hide" aria-labelledby="panelsStayOpen-headingThree">
-                    <PaymentForm />
+                    <PaymentForm orderItems={orderItems} orderInfo={orderInfo} setOrderInfo={setOrderInfo} />
                   </div>
                 </div>
               </div>

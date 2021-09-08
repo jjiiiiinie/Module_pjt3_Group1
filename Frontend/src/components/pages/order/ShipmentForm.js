@@ -2,9 +2,9 @@ import { useState } from 'react';
 import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-bootstrap/Modal';
 
-export default function ShipmentForm() {
+export default function ShipmentForm({ orderInfo, setOrderInfo }) {
     const [show, setShow] = useState(false);
-    const [shipInfo, setShipInfo] = useState([]);
+    const [addressMain, setAddressMain] = useState('');
 
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
@@ -21,14 +21,14 @@ export default function ShipmentForm() {
             }
             fullAddress += (extraAddress !== '' ? ` (${extraAddress})` : '');
         }
-        console.log(fullAddress);
-        // setShipInfo({ ...shipInfo, address: `${fullAddress}` });
-        // console.log(shipInfo);
+        setAddressMain(fullAddress);
+        setOrderInfo({ ...orderInfo, addressMain: fullAddress });
         handleClose();
     }
 
-    const handleChangeForm = () => {
-
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setOrderInfo({ ...orderInfo, [name]: value });
     }
 
     return (
@@ -41,7 +41,7 @@ export default function ShipmentForm() {
                             <input
                                 type="text"
                                 name="recipientName"
-                                onChange={handleChangeForm}
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
@@ -64,47 +64,19 @@ export default function ShipmentForm() {
                                 <label>주소</label>
                                 <input
                                     type="text"
-                                    name="addressPrimary"
-                                    onChange={handleChangeForm}
+                                    name="addressMain"
+                                    value={addressMain}
                                     readOnly
                                 />
                             </div>
-
                             <div className="billing-info">
-                                <label>상세주소</label>
+                                <label>상세 주소</label>
                                 <input
                                     type="text"
-                                    name="addressSecondary"
-                                    onChange={handleChangeForm}
+                                    name="addressDetail"
+                                    onChange={handleChange}
                                 />
                             </div>
-                            {/* <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-target="#postModal">
-                                주소 찾기
-                            </button>
-                            <div className="modal fade" id="postModal" tabindex="-1" role="dialog" aria-labelledby="postModalLabel" aria-hidden="true">
-                                <div className="modal-dialog" role="document">
-                                    <div className="modal-content">
-                                        <div className="modal-header">
-                                            <h5 className="modal-title" id="PostModalLabel">주소 찾기</h5>
-                                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                                                <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <div className="modal-body">
-                                            <DaumPostcode autoClose onComplete={onCompletePost} />
-                                        </div>
-                                        <div className="modal-footer">
-                                            <button type="button" className="btn btn-secondary" data-dismiss="modal">닫기</button>
-                                            <button type="button" className="btn btn-primary">Save changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div> */}
-                            {/*<input type="text" id="sample6_postcode" placeholder="우편번호" />
-                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기" />
-                            <input id="sample6_address" placeholder="주소" />
-                            <input type="text" id="sample6_detailAddress" placeholder="상세주소" />
-                            */}
                         </div>
                     </div>
                     <div className="col-lg-12 col-md-12">
@@ -112,8 +84,8 @@ export default function ShipmentForm() {
                             <label>휴대 전화 번호</label>
                             <input
                                 type="tel"
-                                name="tel"
-                                onChange={handleChangeForm}
+                                name="recipientPhone"
+                                onChange={handleChange}
                             />
                         </div>
                     </div>
