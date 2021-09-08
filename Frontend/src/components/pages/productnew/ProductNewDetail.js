@@ -29,6 +29,7 @@ export default function ProductNewDetail() {
   }
     
   const productcreate = (e) => {
+    e.preventDefault();
     let url = '/catalog-service/catalogs'
     let Product = {
       'productName' : values.productName,
@@ -50,6 +51,8 @@ export default function ProductNewDetail() {
     var config={
       header:{
         'Content-Type' : 'application/json',
+        // 'Authorization' : `Bearer ${sessionStorage.email}`
+        'email' : 'gggggglglglg'
       }
     };
     axios.post(url, Product, config)

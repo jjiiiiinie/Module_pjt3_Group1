@@ -13,6 +13,7 @@ export default function SignUp() {
   })
 
   const join = (e) => {
+    e.preventDefault();
     let emailpattern = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()¥[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
     let pwdpattern = /^.*(?=.{8,20})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).*$/;
     let telpattern = /^[0-9\b -]{0,13}$/;
