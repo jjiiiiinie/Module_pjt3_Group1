@@ -72,7 +72,7 @@ public class UsersController {
 
     @ApiOperation(value="로그인", notes="securtiy를 사용하지 않고 로그인")
     @PostMapping("/nosec/login")
-    public ResponseEntity login(@RequestBody @Valid RequestLogin user, HttpServletResponse response){
+    public ResponseEntity login(@RequestBody @Valid RequestLogin user, HttpServletResponse response, HttpServletRequest req){
 
         UserDto userDto = userService.checkUserByEmail(user);
 
@@ -84,22 +84,29 @@ public class UsersController {
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
                 .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
                 .compact();
-        System.out.println(env.getProperty("token.secret"));
-        response.addHeader("token", token);
-//todo cookie 필요할 수도 있음
-//        response.addCookie("token", token);
-        response.addHeader("userId", String.valueOf(userDto.getUserId()));
-        response.addHeader("email", userDto.getEmail());
+//
+//        response.addHeader("token", token);
+//        response.addHeader("userId", String.valueOf(userDto.getUserId()));
+//        response.addHeader("email", userDto.getEmail());
 
-        Cookie jwtCookie = new Cookie("access-token", token);
-        response.addCookie(jwtCookie);
+//        Cookie jwtCookie = new Cookie("access-token", token);
+//        jwtCookie.setSecure(false);
+//        jwtCookie.setHttpOnly(true);
+//        jwtCookie.setMaxAge(Integer.MAX_VALUE);
+//        jwtCookie.setPath("/nosec/login");
+//        response.addCookie(jwtCookie);
 
-        log.info("no security login");
+//        log.info("no security login");
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         log.info("/users post 로그인 요청");
 
+        log.info(req.getHeader("email"));
+        log.info(req.getHeader("userId"));
+
         ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
+        responseUser.setToken(token);
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
@@ -107,7 +114,7 @@ public class UsersController {
     //전체 사용자 목록
     @ApiOperation(value="전체사용자 목록", notes="전체사용자 목록")
     @GetMapping("/users")
-    public ResponseEntity<List<ResponseUser>> getUser(){
+    public ResponseEntity<List<ResponseUser>> getUser(HttpServletRequest req){
         Iterable<UserEntity> users = userService.getUserByAll();
 
         ModelMapper mapper = new ModelMapper();
@@ -115,7 +122,9 @@ public class UsersController {
 
         List<ResponseUser> responseUsers = new ArrayList<>();
         users.forEach(v -> new ModelMapper().map(v, ResponseUser.class));
-
+//        for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();)
+//
+//            System.out.println(e.nextElement());
         return ResponseEntity.status(HttpStatus.OK).body(responseUsers);
     }
 

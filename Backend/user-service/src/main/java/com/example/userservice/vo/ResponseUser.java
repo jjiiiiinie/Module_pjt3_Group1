@@ -13,5 +13,7 @@ public class ResponseUser {
     private String tel;
     private String name;
 
+    private String token;
+
     private List<ResponseOrder> orders;
 }

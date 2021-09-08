@@ -1,6 +1,8 @@
 package com.example.orderservice.controller;
 
+import com.example.orderservice.client.CartServiceClient;
 import com.example.orderservice.client.CatalogServiceClient;
+import com.example.orderservice.dto.CartDto;
 import com.example.orderservice.dto.OrderDto;
 import com.example.orderservice.entity.OrderEntity;
 import com.example.orderservice.mq.KafkaProducer;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/")
@@ -31,57 +34,74 @@ public class OrderController {
     private final OrdersService orderService;
     private final KafkaProducer kafkaProducer;
     private final CatalogServiceClient catalogServiceClient;
+    private final CartServiceClient cartServiceClient;
 //    private final OrderProducer orderProducer;
     private final Environment env;
 
     @PostMapping(value="/{userId}/orders")
-    public ResponseEntity<ResponseOrder> createOrder(@PathVariable("userId") Long userId, @RequestBody RequestOrder orderDetails, HttpServletRequest req){
+    public ResponseEntity<List<ResponseOrder>> createOrder(@PathVariable("userId") Long userId, @RequestBody RequestOrder requestOrder, HttpServletRequest req){
 
         log.info("Before add orders data");
 
-        //check how much stock is left
-        // order-service -> catalog-service
-        // restTemplate or openfeign(o)
-        boolean isAvailabe = true;
-        ResponseCatalog responseCatalog = catalogServiceClient.getCatalog(orderDetails.getProductId());
+        List<ResponseOrder> responseOrderList = new ArrayList<>();
 
-        if(responseCatalog != null && (responseCatalog.getStock() <= 0 || responseCatalog.getStock() - orderDetails.getQty() < 0)){
-            isAvailabe = false;
+        boolean isAvailabe = true;
+
+        //카트에 담긴 각각의 수량 파악
+        for(CartDto cart: requestOrder.getCartList()){
+            ResponseCatalog responseCatalog = catalogServiceClient.getCatalog(cart.getProductId());
+
+            if(responseCatalog == null || responseCatalog.getStock() <= 0 || responseCatalog.getStock() - cart.getQty() < 0){
+                isAvailabe = false;
+            }
         }
 
         if(isAvailabe){
             ModelMapper modelMapper = new ModelMapper();
             modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-            OrderDto orderDto = modelMapper.map(orderDetails, OrderDto.class);
+            OrderDto orderDto = modelMapper.map(requestOrder, OrderDto.class);
             orderDto.setUserId(userId);
 
-/*            for multi order service, save data in database, use kafka for data sync  카프카 커넥트 사용시 주석*/
-            OrderDto createDto = orderService.createOrder(orderDto);
-//            ResponseOrder returnValue = modelMapper.map(createDto, ResponseOrder.class);
+            String uuid = UUID.randomUUID().toString();
+            // 여러 카트(상품)목록을 꺼내어 생성해줌
+            for(CartDto cart: requestOrder.getCartList()){
+                OrderDto eachOrder = modelMapper.map(requestOrder, OrderDto.class);
 
-            /* send kafka, bottom code is orderService.createOrder job*/
-//            orderDto.setOrderId(UUID.randomUUID().toString());
-//            orderDto.setTotalPrice(orderDto.getQty() * orderDto.getUnitPrice());
-            // 아래시 항상 random 포트가 나옴. 실제 그 포트인지 알 수 없음
-//            orderDto.setInstanceId(String.format("%s : %s",env.getProperty("spring.cloud.client.hostname"), env.getProperty("local.server.port")));
-            kafkaProducer.send("order2catalog4stock", orderDto);
-            ResponseOrder responseOrder = modelMapper.map(orderDto, ResponseOrder.class);
+                eachOrder.setUserId(userId);
+                eachOrder.setOrderUuid(uuid);
+
+                eachOrder.setProductId(cart.getProductId());
+                eachOrder.setUnitPrice(cart.getUnitPrice());
+                eachOrder.setQty(cart.getQty());
+                eachOrder.setTotalPrice(cart.getQty() * cart.getUnitPrice());
+
+                OrderDto createDto = orderService.createOrder(eachOrder);
+                ResponseOrder responseOrder = modelMapper.map(createDto, ResponseOrder.class);
+
+                responseOrderList.add(responseOrder);
+
+                // feign client로 장바구니 삭제
+                cartServiceClient.deleteCart(cart.getCartId());
+
+                // 수량 줄이기, feign client써도되지만... //todo 트랜잭션..
+                kafkaProducer.send("order-catalog-stock-topic", createDto);
+            }
+
 
 //            orderProducer.send("orders", orderDto);
 
 
             log.info("After added orders data");
-            //return ResponseEntity.status(HttpStatus.CREATED).body(returnValue);
-            return ResponseEntity.status(HttpStatus.CREATED).body(responseOrder);
+            return ResponseEntity.status(HttpStatus.CREATED).body(responseOrderList);
         }else{
-            log.info("After added orders data");
+            log.info("수량 부족");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
     @GetMapping(value= "/{userId}/orders")
-    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") String userId) throws Exception{
+    public ResponseEntity<List<ResponseOrder>> getOrder(@PathVariable("userId") Long userId) throws Exception{
         log.info("Before retrieve orders data");
         Iterable<OrderEntity> orderList = orderService.getOrdersByUserId(userId);
         List<ResponseOrder> result = new ArrayList<>();
@@ -89,21 +109,8 @@ public class OrderController {
             result.add(new ModelMapper().map(v, ResponseOrder.class));
         });
 
-        //강제로 에러 추가
-//        Random rnd = new Random(System.currentTimeMillis());
-//        int time = rnd.nextInt(3);
-//        if(time % 2 == 0){
-//            try{
-//                Thread.sleep(10000);
-//                throw new Exception("에러 발생!");
-//            }catch (Exception ex){
-//                log.warn(ex.getMessage());
-//            }
-//        }
-
         log.info("After retrieve orders data");
 
         return ResponseEntity.status(HttpStatus.OK).body(result);
-//        throw new Exception("Server not working!");
     }
 }

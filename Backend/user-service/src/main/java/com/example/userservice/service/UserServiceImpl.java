@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService{
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        UserDto userDto =  mapper.map(requestLogin, UserDto.class);
+        UserDto userDto =  mapper.map(userEntity, UserDto.class);
 
 
         return userDto;

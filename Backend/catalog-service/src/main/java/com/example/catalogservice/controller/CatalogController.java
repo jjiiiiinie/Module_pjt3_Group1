@@ -56,8 +56,8 @@ public class CatalogController {
     }
 
     @ApiOperation(value="상세 상품 조회", notes="상세 상품 조회: 카트에서 feignClient를 사용하여 접근")
-    @GetMapping("/catalogs/client/{prodcutId}")
-    public ResponseEntity<ResponseCatalog> getCatalog(@PathVariable("prodcutId") Long productId){
+    @GetMapping("/catalogs/client/{productId}")
+    public ResponseEntity<ResponseCatalog> getCatalog(@PathVariable("productId") Long productId){
         log.info("Before retrieve catalgos data");
         CatalogEntity catalog = catalogRepository.findById(productId).get();
 

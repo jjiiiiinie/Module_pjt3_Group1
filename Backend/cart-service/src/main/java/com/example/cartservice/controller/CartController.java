@@ -2,7 +2,6 @@ package com.example.cartservice.controller;
 
 import com.example.cartservice.client.CatalogServiceClient;
 import com.example.cartservice.dto.CartDto;
-import com.example.cartservice.entity.CartEntity;
 import com.example.cartservice.mq.KafkaProducer;
 import com.example.cartservice.service.CartService;
 import com.example.cartservice.vo.RequestCart;
@@ -63,7 +62,7 @@ public class CartController {
         boolean isAvailabe = true;
         ResponseCatalog responseCatalog = catalogServiceClient.getCatalog(requestCart.getProductId());
 
-        if(responseCatalog != null && (responseCatalog.getStock() <= 0 || responseCatalog.getStock() - requestCart.getQty() < 0)){
+        if(responseCatalog == null || responseCatalog.getStock() <= 0 || responseCatalog.getStock() - requestCart.getQty() < 0){
             isAvailabe = false;
         }
 
@@ -105,7 +104,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    //주문하기 버튼 >> 카트 내용 수정, 내용 수정 된 값 카프카로 오더에게 보내기
+    //주문(구매)하기 버튼 >> 카트 내용 수정, 내용 수정 된 값 카프카로 오더에게 보내기
     @PutMapping(value = "/carts")
     public ResponseEntity updateAndPayCart(@RequestBody List<RequestCart> requestCartList){
         List<ResponseCart> responseCartList = new ArrayList<>();
@@ -130,7 +129,7 @@ public class CartController {
                 ResponseCart responseCart = modelMapper.map(createDto, ResponseCart.class);
                 responseCartList.add(responseCart);
 
-                kafkaProducer.send("cart2orderByPay", createDto);
+//                kafkaProducer.send("cart2orderByPay", createDto);
 
             }else{
                 log.info("재고 부족");
@@ -140,34 +139,5 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.OK).body(responseCartList);
     }
-
-    //오더 코드
-//    @GetMapping(value= "/{userId}/orders")
-//    public ResponseEntity<List<ResponseCart>> getOrder(@PathVariable("userId") String userId) throws Exception{
-//        log.info("Before retrieve orders data");
-//        Iterable<CartEntity> orderList = cartService.getCartByUserId(userId);
-//        List<ResponseCart> result = new ArrayList<>();
-//        orderList.forEach(v -> {
-//            result.add(new ModelMapper().map(v, ResponseCart.class));
-//        });
-
-        //강제로 에러 추가
-//        Random rnd = new Random(System.currentTimeMillis());
-//        int time = rnd.nextInt(3);
-//        if(time % 2 == 0){
-//            try{
-//                Thread.sleep(10000);
-//                throw new Exception("에러 발생!");
-//            }catch (Exception ex){
-//                log.warn(ex.getMessage());
-//            }
-//        }
-//
-//        log.info("After retrieve orders data");
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(result);
-//        throw new Exception("Server not working!");
-//    }
-    
     
 }

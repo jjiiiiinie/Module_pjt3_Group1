@@ -1,34 +1,32 @@
 package com.example.orderservice.vo;
 
+import com.example.orderservice.dto.CartDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import javax.persistence.Column;
+import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestOrder {
 
-    private Long userId;
-
-    private Long productId;
-
-    private Integer qty;
-
-    private Integer unitPrice;
-
-    private Integer totalPrice;
-
-    private String recipient_name;
-
-    private String recipient_address;
-
-    private String recipient_phone;
+    private List<CartDto> cartList;
 
 
-    private String sender_name;
+    private String recipientName;
 
-    private String sender_phone;
+    private String recipientAddress;
 
-    private String sender_password;
+    private String recipientPhone;
+
+
+    private String senderName;
+
+    private String senderPhone;
+
+    private String senderPassword;
+
+
+    private String paymentPlan;
 }

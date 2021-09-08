@@ -19,13 +19,11 @@ public class OrderServiceImpl implements OrdersService{
     private final OrderRepository repository;
 
     @Override
-    public OrderDto createOrder(OrderDto orderDetails) {
-//        orderDetails.setOrderId(UUID.randomUUID().toString());
-        orderDetails.setTotalPrice(orderDetails.getQty() * orderDetails.getUnitPrice());
+    public OrderDto createOrder(OrderDto eachOrder) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
-        OrderEntity orderEntity = modelMapper.map(orderDetails, OrderEntity.class);
+        OrderEntity orderEntity = modelMapper.map(eachOrder, OrderEntity.class);
 
         repository.save(orderEntity);
 
@@ -34,7 +32,7 @@ public class OrderServiceImpl implements OrdersService{
     }
 
     @Override
-    public OrderDto getOrderByOrderId(String orderId) {
+    public OrderDto getOrderByOrderId(Long orderId) {
         OrderEntity orderEntity = repository.findByOrderId(orderId);
         OrderDto orderDto = new ModelMapper().map(orderEntity, OrderDto.class);
 
@@ -42,7 +40,7 @@ public class OrderServiceImpl implements OrdersService{
     }
 
     @Override
-    public Iterable<OrderEntity> getOrdersByUserId(String userId) {
+    public Iterable<OrderEntity> getOrdersByUserId(Long userId) {
         return repository.findByUserId(userId);
     }
 }

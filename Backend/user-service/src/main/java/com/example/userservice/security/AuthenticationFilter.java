@@ -64,6 +64,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                         .compact();
         System.out.println(env.getProperty("token.secret"));
         response.addHeader("token", token);
+        log.info(String.valueOf(userDetails.getUserId()));
         response.addHeader("userId", String.valueOf(userDetails.getUserId()));
     }
 }
