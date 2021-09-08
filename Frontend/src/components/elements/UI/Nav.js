@@ -3,7 +3,7 @@ import Logo from './Logo';
 import Menu from './Menu';
 import SideMenu from './SideMenu';
 
-export default function Nav() {
+export default function Nav({email}) {
   
   const [ scroll, setScroll ] = useState(0);
 

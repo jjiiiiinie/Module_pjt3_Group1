@@ -7,7 +7,7 @@ const Views = ({count, addView}) => {
   return(
     <div>
       <p>조회수 : {count}</p>
-      <input type="text" value={number} onChange={(e) => setNumber(e.target.value)}/>
+       type="text" value={number} onChange={(e) => setNumber(e.target.value)}/>
       <button onClick={() => addView(number)}>입력</button>
     </div>
   )

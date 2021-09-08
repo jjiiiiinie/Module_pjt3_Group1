@@ -15,7 +15,6 @@ export default function Menu() {
     .then(data => {
       setmenuData(data);
     })
-    // .catch(error => console.log(error));
   },[]);
 
   const menuList = menuData.map(item => {
@@ -53,8 +52,5 @@ export default function Menu() {
         </nav>
       </div>
     </div>
-    // <ul className="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-    //   {menuList}
-    // </ul>
   );
 }
