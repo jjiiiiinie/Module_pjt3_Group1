@@ -83,10 +83,10 @@ export default function AddBuyAndCart({data, color, size}) {
       <div className="pro-details-cart btn-hover">
         <button onClick={() => handlePutCartList()}>Add To Cart</button>
       </div>
-      <div class="pro-details-cart btn-hover ml-0"> 
+      <div className="pro-details-cart btn-hover ml-0"> 
         <a href="/">Buy Now</a>
       </div>
-      <div class="pro-details-cart btn-hover ml-0">
+      <div className="pro-details-cart btn-hover ml-0">
         재고수량 : 
       </div>
     </div>

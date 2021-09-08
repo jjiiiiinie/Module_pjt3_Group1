@@ -157,3 +157,39 @@ footer ul {
 footer ul li a:link {
     color:#c5c5c5;
 }
+
+.form-check-input{
+    width: 2rem; height: 2rem;
+}
+
+.cart-shiping-update-wrapper .cart-delete-selected > button,
+.cart-shiping-update-wrapper .cart-select-all> button
+ {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+    display: inline-block;
+    padding: 18px 63px 17px;
+    text-transform: uppercase;
+    color: #363f4d;
+    border-radius: 50px;
+    background-color: #f2f2f2;
+    border-style: none;
+  }
+  
+.product-wrap .product-img .product-action .pro-cart {
+  font-size: 14px;
+  padding: 0;
+  width: calc(100% - 48px);
+  transition-delay: 0.1s;
+}
+.product-wrap .product-img .product-action .pro-delete {
+  width: 100%;
+  margin: 0;
+  transition-delay: 0.2s;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.select-all-checkbox {
+    width: 2rem; height: 2rem;
+}

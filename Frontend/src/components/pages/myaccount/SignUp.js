@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import { useHistory } from 'react-router';
+import React, {useState} from 'react';
+// import { useHistory } from 'react-router';
 import axios from 'axios';
 
 export default function SignUp() {
@@ -82,42 +82,43 @@ export default function SignUp() {
   // },[process.IP, process.PORT]);
 
   const join = (e) => {
-    // let emailpattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
     let emailpattern = /^(([^<>()\].,;:\s@"]+(\.[^<>()\].,;:\s@"]+)*)|(".+"))@(([^<>()¥[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-    let pwdpattern = /^.*(?=.{6,20})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).*$/;
+    let pwdpattern = /^.*(?=.{8,20})(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).*$/;
     let telpattern = /^[0-9\b -]{0,13}$/;
-    let url = '/users'
+    let url = '/user-service/users'
     let User = {
-      'email' : this.email,
-      'pwd' : this.pwd,
-      'name' : this.name,
-      'tel' : this.tel
+      'email' : values.email,
+      'pwd' : values.pwd,
+      'name' : values.name,
+      'tel' : values.tel
     }
     var config={
       header:{
         'Content-Type' : 'application/json',
       }
     };
-    if(emailpattern.test(this.email)==false){
+    if(emailpattern.test(values.email)===false){
       alert("이메일 형식에 맞게 작성해 주세요.")
       return;
     }
-    if(pwdpattern.test(this.email)==false){
+    if(pwdpattern.test(values.pwd)===false){
       alert("숫자,문자,특수문자를 조합해서 최소 8자 이상 입력해 주세요.")
       return;
     }
-    if(telpattern.test(this.email)==false){
+    if(telpattern.test(values.tel)===false){
       alert("숫자만 입력해 주세요.( ex : 01098765432 )")
       return;
     }
     axios.post(url, User, config)
     .then((res)=>{
-      // alert("회원가입완료")
+      alert("회원가입완료")
       console.log(res);
     }).catch(error => {
+      alert("회원가입실패")
       console.log(error);
     })
   }
+
   // const handlePutUserList = (e) => {
     
   //   e.preventDefault();
@@ -159,7 +160,7 @@ export default function SignUp() {
     <div className="accordion-item single-my-account mb-20 card">
       <div className="panel-heading card-header" id="panelsStayOpen-headingOne">
         <button className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-          <h3 className="panel-title"><span>1 .</span> Edit your account information </h3>
+          <h3 className="panel-title"><span>2 .</span>Sign Up</h3>
         </button>
       </div>
       <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
@@ -217,13 +218,14 @@ export default function SignUp() {
                 } */}
                 <div className="col-lg-12 col-md-12">
                   <div className="billing-info">
-                    <label>Pwd</label>
+                    <label>Password</label>
                     <input 
                       type="password"
                       name="pwd"  
                       value={values.pwd}
                       onChange={handleChangeForm}
                     />
+                    숫자,문자,특수문자를 조합해서 최소 8자 이상 입력해 주세요.
                   </div>
                 </div>
                 {/* {
@@ -278,13 +280,14 @@ export default function SignUp() {
                 
                 <div className="col-lg-12 col-md-12">
                   <div className="billing-info">
-                    <label>Tel</label>
+                    <label>Phone</label>
                     <input 
                       type="tel"
                       name="tel"
                       value={values.tel}
                       onChange={handleChangeForm}
                     />
+                    숫자만 입력해 주세요.( ex : 01098765432 )
                   </div>
                 </div>
                 {/* {

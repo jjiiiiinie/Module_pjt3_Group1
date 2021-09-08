@@ -31,8 +31,8 @@ export default function SideMenu() {
   return(
     <div className="col-xl-2 col-lg-2 col-md-6 col-8">
       <div className="header-right-wrap ">
-        <button>상품등록</button>
-        <button>주문내역</button>
+        <button><a href="/productnew">상품등록</a></button>
+        <button><a href="/orderlist">주문내역</a></button>
         {sideList}
         {/* 햄버거 */}
         <div className="same-style mobile-off-canvas d-block d-lg-none">
