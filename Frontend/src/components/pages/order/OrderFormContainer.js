@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
 import ShipmentForm from './ShipmentForm';
 import OrderForm from './OrderForm';
 import PaymentForm from './PaymentForm';
 
-export default function OrderContainer() {
+export default function OrderFormContainer() {
 
   return (
     <div className="myaccount-area pb-80 pt-100">

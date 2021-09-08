@@ -193,3 +193,7 @@ footer ul li a:link {
 .select-all-checkbox {
     width: 2rem; height: 2rem;
 }
+
+.order-table-content table {
+    margin: auto;
+}

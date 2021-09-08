@@ -26,17 +26,17 @@ export default function ShipmentForm() {
                     </div>
                     <div className="col-lg-12 col-md-12">
                         <div className="billing-info">
-                            <button type="button" class="btn btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#myModal">
+                            <button type="button" className="btn btn-secondary my-1" data-bs-toggle="modal" data-bs-target="#myModal">
                                 주소 찾기
                             </button>
-                            <div class="modal" id="myModal">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="data-wrapper">주소 찾기</h4>
-                                            <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                            <div className="modal" id="myModal">
+                                <div className="modal-dialog">
+                                    <div className="modal-content">
+                                        <div className="modal-header">
+                                            <h4 className="data-wrapper">주소 찾기</h4>
+                                            <button type="button" className="close" data-bs-dismiss="modal">&times;</button>
                                         </div>
-                                        <div class="modal-body">
+                                        <div className="modal-body">
                                             <DaumPostcode autoClose onComplete={onCompletePost} />
                                         </div>
                                     </div>

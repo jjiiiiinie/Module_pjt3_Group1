@@ -6,36 +6,41 @@ import axios from "axios";
 export default function CartTable() {
 
   var process = require('../../../../myprocess.json');
-  const [ cartDatas, setCartDatas ] = useState([]);
+  const [cartDatas, setCartDatas] = useState([]);
   // isCheckAll: 장바구니 항목 전체 선택 여부 (default: false)
-  const [ isCheckAll, setIsCheckAll ] = useState(false);
-  // isCheck: 장바구니에서 선택된 항목 리스트 (default: [])
-  const [ isCheck, setIsCheck ] = useState([]);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  // isCheck: 장바구니에서 선택된 항목의 id 리스트 (default: [])
+  const [isCheck, setIsCheck] = useState([]);
   // totalPrice: 장바구니에서 선택된 항목들의 가격 합계 (default: 0)
-  const [ totalPrice, setTotalPrice ] = useState(0);
-  
+  const [totalPrice, setTotalPrice] = useState(0);
+  // checkItems: 장바구니에서 선택된 항목의 리스트 (default: [])
+  const [checkItems, setCheckItems] = useState([]);
+
   // 장바구니 데이터 GET
   useEffect(() => {
     fetch(`http://${process.IP}:${process.PORT}/cart`)
-    .then(res => {
-      return res.json();
-    })
-    .then(data => {
-      setCartDatas(data);
-    })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        setCartDatas(data);
+      })
     // .catch(error => console.log(error));
-  },[process.IP, process.PORT]);
-  
-  // 
+  }, [process.IP, process.PORT]);
+
+  // 장바구니에서 선택한 항목 가격 총합 계산 
   useEffect(() => {
     var sum = 0;
+    var items = [];
     isCheck.forEach(id => {
-      cartDatas.filter(data => data.id  === id).map(item =>{
-        sum += parseFloat((item.price * ((100-item.discount)/100)).toFixed(2));
+      cartDatas.filter(data => data.id === id).map(item => {
+        items.push(item);
+        sum += parseFloat((item.price * ((100 - item.discount) / 100)).toFixed(2));
       });
     });
     setTotalPrice(sum);
-  },[isCheck, cartDatas]);
+    setCheckItems(items);
+  }, [isCheck, cartDatas]);
 
   const handleSelectAll = e => {
     setIsCheckAll(!isCheckAll);
@@ -53,9 +58,9 @@ export default function CartTable() {
     }
   };
 
-  const handleCheckDelete = () =>{
+  const handleCheckDelete = () => {
     isCheck.forEach(id => {
-      console.log(id)
+      // console.log(id)
       // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
       //   method: "DELETE"
       // }).then(
@@ -68,10 +73,10 @@ export default function CartTable() {
       //     setCartDatas(data);
       //   })
       // )
-  })
-};
+    })
+  };
 
-  return(
+  return (
     <div className="cart-main-area pt-90 pb-100">
       <div className="container">
         <h3 className="cart-page-title">Your cart items</h3>
@@ -93,11 +98,11 @@ export default function CartTable() {
                 <tbody>
                   {
                     cartDatas.map(item => (
-                      <CartListView 
-                        data = {item}
-                        setCartDatas = {setCartDatas}
-                        handleCheck = {handleCheck}
-                        isChecked = {isCheck.includes(item.id)}
+                      <CartListView
+                        data={item}
+                        setCartDatas={setCartDatas}
+                        handleCheck={handleCheck}
+                        isChecked={isCheck.includes(item.id)}
                       />
                     ))
                   }
@@ -124,7 +129,7 @@ export default function CartTable() {
             </div>
           </div>
         </div>
-          <CartTableFooter totalPrice = {totalPrice}/>
+        <CartTableFooter orderItems={checkItems} totalPrice={totalPrice} />
       </div>
     </div>
   );
