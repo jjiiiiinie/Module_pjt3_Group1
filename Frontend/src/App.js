@@ -1,18 +1,13 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Home from './components/pages/home/Home'
-// import Features from './components/pages/features/Features';
-import Pricing from './components/pages/pricing/Pricing';
 import ProductDetail from './components/pages/productdetail/ProductDetail';
-// import Compare from './components/pages/compare/Compare';
-import WishList from './components/pages/wishlist/WishList';
 import Cart from './components/pages/cart/Cart';
 import Order from './components/pages/order/Order';
 import ProductList from './components/pages/product/ProductList';
 import MyAccount from './components/pages/myaccount/MyAccount';
 import ReduxSample from './components/pages/reduxsample/ReduxSample';
-import Test from './components/pages/test/Test';
 import ProductNew from './components/pages/productnew/ProductNew';
 import ProductNewDetail from './components/pages/productnew/ProductNewDetail';
 
@@ -39,16 +34,11 @@ function App()  {
       <ToTop>
         <Switch>             
           <Route exact path="/"><Home /></Route>
-          {/* <Route exact path="/features"><Features /></Route> */}
-          <Route exact path="/pricing"><Pricing /></Route>
-          <Route exact path="/productdetail/:id"><ProductDetail /></Route>
-          {/* <Route exact path="/compare"><Compare /></Route> */}
-          <Route exact path="/wishlist"><WishList /></Route>
+          <Route exact path="/productdetail/:productId"><ProductDetail /></Route>
           <Route exact path="/cart"><Cart /></Route>
           <Route exact path="/order"><Order /></Route>
           <Route exact path="/productlist"><ProductList /></Route>
           <Route exact path="/myaccount"><MyAccount /></Route>
-          <Route exact path="/test"><Test/></Route>
           <Route exact path="/productnew"><ProductNew /></Route>
           <Route exact path="/productnewdetail"><ProductNewDetail /></Route>
           <Provider store={store}>
