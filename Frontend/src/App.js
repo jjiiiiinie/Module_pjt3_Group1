@@ -9,6 +9,7 @@ import ProductDetail from './components/pages/productdetail/ProductDetail';
 import Compare from './components/pages/compare/Compare';
 import WishList from './components/pages/wishlist/WishList';
 import Cart from './components/pages/cart/Cart';
+import Order from './components/pages/order/Order';
 import ProductList from './components/pages/product/ProductList';
 import MyAccount from './components/pages/myaccount/MyAccount';
 import ReduxSample from './components/pages/reduxsample/ReduxSample';
@@ -61,6 +62,7 @@ function App()  {
           <Route exact path="/compare"><Compare /></Route>
           <Route exact path="/wishlist"><WishList /></Route>
           <Route exact path="/cart"><Cart /></Route>
+          <Route exact path="/order"><Order /></Route>
           <Route exact path="/productlist"><ProductList /></Route>
           <Route exact path="/myaccount"><MyAccount /></Route>
           <Route exact path="/test"><Test/></Route>
