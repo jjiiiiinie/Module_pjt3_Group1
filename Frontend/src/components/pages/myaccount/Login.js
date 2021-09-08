@@ -7,26 +7,28 @@ export default function Login() {
     password: '',
   })
 
-  const login = (e) => {
-    let url = '/user-service/nosec/login'
-    let User = {
-      'email':values.email,
-      'password':values.password
-    }
-    var config={
-      header:{
-        'Content-Type' : 'application/json',
-      }
-    }
-    axios.post(url, User, config)
-    .then((res)=>{
-      alert("로그인성공")
-      console.log(res);
-    }).catch((error)=>{
-      alert("로그인실패")
-      console.log(error);
-    })
-  }
+  // const login = (e) => {
+  //   let url = '/user-service/nosec/login'
+  //   let User = {
+  //     'email':values.email,
+  //     'password':values.password
+  //   }
+    
+  //   var config={
+  //     header:{
+  //       'Content-Type' : 'application/json',
+  //     }
+  //   }
+  //   axios.post(url, User, config, {withCredentials: true})
+  //   // axios.post(url, User, config)
+  //   .then((res)=>{
+  //     alert("로그인성공")
+  //     console.log(res);
+  //   }).catch((error)=>{
+  //     alert("로그인실패")
+  //     console.log(error);
+  //   })
+  // }
 
   const handleChangeForm = (e) => {
     setValues({
@@ -34,6 +36,44 @@ export default function Login() {
       [e.target.name]: e.target.value
     })
   }
+
+  const onClickLogin = (e) => {
+    e.preventDefault();
+    let url = '/user-service/nosec/login'
+    let User = {
+      'email':values.email,
+      'password':values.password
+    }
+    
+    var config={
+      header:{
+        'Content-Type' : 'application/json',
+      }
+    }
+    axios.post(url, User, config, {withCredentials: true})
+    .then(res => {
+      console.log(res.data)
+      if(res.data.email === undefined){
+        // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
+        console.log('======================',res.data.msg)
+        alert('입력하신 id 가 일치하지 않습니다.')
+    } else if(res.data.email === null){
+        // id는 있지만, pw 는 다른 경우 userId = null , msg = undefined
+        console.log('======================','입력하신 비밀번호 가 일치하지 않습니다.')
+        alert('입력하신 비밀번호 가 일치하지 않습니다.')
+    } else if(res.data.email === values.email) {
+        // id, pw 모두 일치 userId = userId1, msg = undefined
+        console.log('======================','로그인 성공')
+        sessionStorage.setItem('email', res.data.email)
+        sessionStorage.setItem('token', res.data.token)
+        sessionStorage.setItem('userId', res.data.userId)
+
+    }
+    // 작업 완료 되면 페이지 이동(새로고침)
+    // document.location.href = '/'
+})
+.catch()
+}
 
   return(
     <div className="accordion-item single-my-account mb-20 card">
@@ -44,7 +84,7 @@ export default function Login() {
       </div>
       <div id="panelsStayOpen-collapseOne" className="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
         <div className="card-body">
-          <form onSubmit={login}>
+          <form onSubmit={onClickLogin}>
             <div className="myaccount-info-wrapper">
               <div className="account-info-wrapper">
                 <h4>로그인</h4>
@@ -75,7 +115,7 @@ export default function Login() {
               </div>
               <div className="billing-back-btn">
                 <div className="billing-btn">
-                  <button type="submit">로그인하기</button>
+                  <button type="button" onClick={onClickLogin}>로그인하기</button>
                 </div>
               </div>
             </div>
