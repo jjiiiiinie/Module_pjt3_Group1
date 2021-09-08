@@ -19,8 +19,8 @@ export default function Login() {
         'Content-Type' : 'application/json',
       }
     }
-    // axios.post(url, User, config, {withCredentials: true})
-    axios.post(url, User, config)
+    axios.post(url, User, config, {withCredentials: true})
+    // axios.post(url, User, config)
     .then((res)=>{
       alert("로그인성공")
       console.log(res);

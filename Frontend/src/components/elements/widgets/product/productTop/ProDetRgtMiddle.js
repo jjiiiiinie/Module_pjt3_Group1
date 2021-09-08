@@ -7,10 +7,18 @@ export default function ProDetRgtMiddle() {
   const { id } = useParams();
 
   const [ datas, setDatas ] = useState([]);
-  const [ color, setColor ] = useState("");
-  const [ size, setSize ] = useState("");
 
   var process = require('../../../../../myprocess.json');
+  
+  // useEffect(()=>{
+  //   axios.get(`/catalog-service/client/catalogs/${productId}`)
+  //   .then(res => {
+  //       return res.json();
+  //   })
+  //   .then(data => {
+  //     setDatas(data);
+  //   });
+  // },[]);
 
   useEffect(()=>{
       fetch(`http://${process.IP}:${process.PORT}/product/${id}`)
@@ -26,8 +34,6 @@ export default function ProDetRgtMiddle() {
     <Fragment>
       <AddBuyAndCart 
         data = {datas}
-        color = {color}
-        size = {size}
       />
     </Fragment>
   );
