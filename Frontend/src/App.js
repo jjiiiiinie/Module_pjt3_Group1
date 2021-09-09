@@ -10,6 +10,7 @@ import MyAccount from './components/pages/myaccount/MyAccount';
 import ReduxSample from './components/pages/reduxsample/ReduxSample';
 import ProductNew from './components/pages/productnew/ProductNew';
 import ProductNewDetail from './components/pages/productnew/ProductNewDetail';
+import History from './components/pages/history/History';
 
 import "./assets/css/style.css";
 import "./assets/css/mystyle.css";
@@ -42,6 +43,7 @@ function App()  {
           <Route exact path="/myaccount"><MyAccount /></Route>
           <Route exact path="/productnew"><ProductNew /></Route>
           <Route exact path="/productnewdetail"><ProductNewDetail /></Route>
+          <Route exact path="/history"><History /></Route>
           <Provider store={store}>
             <Route exact path="/reduxsample"><ReduxSample /></Route>
           </Provider>

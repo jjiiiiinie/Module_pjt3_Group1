@@ -1,0 +1,34 @@
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+
+export default function HistoryListView({ data }) {
+
+    return (
+        <tr key={data.id}>
+            <td className="order-id">
+            </td>
+            <td className="order-user-id">
+            </td>
+            <td className="order-product-name">
+                <Link to={`/productdetail/${data.id}`}>id:{data.id} / name:{data.name}</Link>
+            </td>
+            <td className="order-date">
+                {data.qty}
+            </td>
+            <td className="order-product-qty">
+                {/* {data.date} */}
+            </td>
+            <td className="order-status">
+                {/* {data.status} */}
+            </td>
+            <td className="order-status-select">
+                {/* <input type="select">
+                    <option value="ordered">결제 완료</option>
+                    <option value="packing">배송준비중</option>
+                    <option value="shipped">배송 중</option>
+                    <option value="delivered">배송 완료</option>
+                </input> */}
+            </td>
+        </tr>
+    );
+}
