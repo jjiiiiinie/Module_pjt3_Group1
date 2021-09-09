@@ -14,8 +14,43 @@ export default function ProductViews({sliceNumber, columnNumber}) {
     .catch()
   },[])
 
+  // const newUrl = window.location.pathname.split('/')[2];
+  // const [ books, setbooks ] = useState([]);
+  
+  // useEffect(() => {
+  //   axios.get(`/catalog-service/catalogs/client/${newUrl}`)
+  //   .then(res => {
+  //     setbooks(res.data);
+  //   })
+  //   .catch()
+  // },[])
 
-  // const categorylist = ['소설', '시/에세이', '경제/경영', '자기계발', '인문', '역사/문화', '종교', '정치/사회', '예술/대중문화', '과학', '기술/공학', '컴퓨터/IT']
+  // const [ count, setCount ] = useState(1);
+
+  // const handlePutCartList = (e) => {
+  //   let url = '/cart-service/carts'
+  //   let Item = {
+  //     'productId' : productId,
+  //     'qty' : count,
+  //     'unitPrice' : unitPrice,
+  //     'totalPrice' : count * unitPrice,
+  //     'userId' : 1
+  //   }
+  //   var config = {
+  //     headers:{
+  //       "Content-Type" : "application/json",
+  //     }
+  //   }
+  //   axios.post(url, Item, config)
+  //   .then((res) => {
+  //     alert("카트에 상품이 담겼습니다.")
+  //     console.log(res)
+  //   }).catch((err) => {
+  //     alert("상품 담기 실패")
+  //     console.log(err);
+  //   })
+  // }
+
   const booklist = books.map((book) => {
     return (
       <div className={`col-xl-${columnNumber} col-md-6 col-lg-${columnNumber} col-sm-6`} >
@@ -34,6 +69,7 @@ export default function ProductViews({sliceNumber, columnNumber}) {
                 <button 
                   disabled="" 
                   className="active"
+                  // onClick = {handlePutCartList}
                 >
                   BUY
                 </button>
@@ -63,7 +99,6 @@ export default function ProductViews({sliceNumber, columnNumber}) {
 
   return(
     <div>
-      {/* {categorylist} */}
       <div className="row mt-5">
         {booklist}
       </div>

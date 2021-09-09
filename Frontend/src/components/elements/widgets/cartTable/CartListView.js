@@ -1,10 +1,9 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function CartListView({data, setCartDatas, handleCheck, isChecked}) {
-  
-  var process = require('../../../../myprocess.json')
-  
+
   const [ count, setCount ] = useState(data.qty);
 
   // 장바구니 단일 항목 수량 - UPDATE 요청
@@ -19,38 +18,28 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
 
   // 장바구니 단일 항목 수량 + UPDATE 요청
   const plusClick = () => {
+    // 재고수량보다 많을 경우 alert
     setCount(count+1)
   }
 
-
   // 장바구니 단일 항목 DELETE 요청
-  const handleDelete = (id) => {
-    fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
 
   const handleDelete = () => {
-    fetch(`/cart-service/carts/user/${sessionStorage.userId}/${data.cartId}`, {
-
-      method: "DELETE"
-    }).then(
+    let url = `/cart-service/carts/${data.cartId}`
+    axios.delete(url)
+    .then(
       alert("삭제되었습니다."),
-      fetch(`/cart-service/carts/user/${sessionStorage.userId}`)
-      .then(res => {
-        console.log("dd",res)
-        return res.json();
-      })
-      .then(data => {
-        setCartDatas(data);
-        return window.location.reload();
-      })
-    )
+      )
+      return window.location.reload(`/cart-service/carts/user/${sessionStorage.userId}`);
   }
   
-
   return(
     <tr key={data.productId}>
     <td className="product-checkbox">
       <div className="form-check">
-        <input id={data.productId} className="form-check-input" type="checkbox" value={data.productId} checked={isChecked} onChange={handleCheck}/>
+        <input id={data.productId} className="form-check-input" type="checkbox" 
+          value={data.productId} checked={isChecked} onChange={handleCheck}
+        />
         <label className="form-check-label d-none">
           {data.productId}
         </label>
@@ -86,6 +75,7 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
       <td className="product-remove">
         <button
           title={data.productId}
+          // onClick={() => handleDelete(data.cartId)}
           onClick={() => handleDelete(data.cartId)}
           value={data.productId}
         >

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Logo from './Logo';
-import Menu from './Menu';
+// import Menu from './Menu';
 import SideMenu from './SideMenu';
+
 
 export default function Nav({email}) {
   
@@ -28,7 +29,7 @@ export default function Nav({email}) {
       <div className="container-fluid">
         <div className="row">
           <Logo></Logo>
-          <Menu></Menu>
+          {/* <Menu></Menu> */}
           <SideMenu></SideMenu>
         </div>
     </div>  
