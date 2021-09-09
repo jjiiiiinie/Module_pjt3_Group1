@@ -34,11 +34,9 @@ export default function CartTable() {
   //   setTotalPrice(sum);
   // },[isCheck, cartDatas]);
 
-  console.log(cartDatas)
   useEffect(() => {
     var sum = 0;
     isCheck.forEach(id => {
-      console.log(id)
       cartDatas.filter(data => data.cartId  === id).map(item =>{
         sum += item.unitPrice * item.qty;
       });
@@ -55,16 +53,17 @@ export default function CartTable() {
   // };
 
   const handleCheck = e => {
-    const { id, checked } = e.target;
+    var { id, checked } = e.target;
+    id=id.toString();
     setIsCheck([...isCheck, id]);
     if (!checked) {
       setIsCheck(isCheck.filter(item => item !== id));
     }
+    console.log(isCheck);
   };
 
   const handleCheckDelete = () =>{
     isCheck.forEach(id => {
-      console.log(id)
       // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
       //   method: "DELETE"
       // }).then(
@@ -106,7 +105,7 @@ export default function CartTable() {
                         data = {cartData}
                         setCartDatas = {setCartDatas}
                         handleCheck = {handleCheck}
-                        // isChecked = {isCheck.includes(cartData.productId)}
+                        isChecked = {isCheck.includes(cartData.productId.toString())}
                       />
                     ))
                   }
