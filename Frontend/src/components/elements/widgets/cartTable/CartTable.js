@@ -6,14 +6,31 @@ import axios from "axios";
 export default function CartTable() {
 
   const [ cartDatas, setCartDatas ] = useState([]);
+
   // isCheckAll: 장바구니 항목 전체 선택 여부 (default: false)
-  const [ isCheckAll, setIsCheckAll ] = useState(false);
-  // isCheck: 장바구니에서 선택된 항목 리스트 (default: [])
-  const [ isCheck, setIsCheck ] = useState([]);
+  const [isCheckAll, setIsCheckAll] = useState(false);
+  // isCheck: 장바구니에서 선택된 항목의 id 리스트 (default: [])
+  const [isCheck, setIsCheck] = useState([]);
   // totalPrice: 장바구니에서 선택된 항목들의 가격 합계 (default: 0)
-  const [ totalPrice, setTotalPrice ] = useState(0);
-  
+  const [totalPrice, setTotalPrice] = useState(0);
+  // checkItems: 장바구니에서 선택된 항목의 리스트 (default: [])
+  const [checkItems, setCheckItems] = useState([]);
+
   // 장바구니 데이터 GET
+  /* 'cartDatas' 포맷
+    [
+      {
+        "id": "5",
+        "name": "Lorem ipsum female coat",
+        "image": ["", ""],
+        "price": 25.5,
+        "discount": 10,
+        "qty": 1,
+        "color": "brown",
+        "size": "m"
+      },
+    ]
+  */
   useEffect(() => {
     axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
     .then(res => {
@@ -25,13 +42,16 @@ export default function CartTable() {
 
   useEffect(() => {
     var sum = 0;
+    var items = [];
     isCheck.forEach(id => {
       cartDatas.filter(data => data.id  === id).map(data =>{
+        items.push(item);
         sum += cartDatas.unitPrice * cartDatas.qty;
       });
     });
     setTotalPrice(sum);
-  },[isCheck, cartDatas]);
+    setCheckItems(items);
+  }, [isCheck, cartDatas]);
 
   const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
@@ -49,7 +69,8 @@ export default function CartTable() {
     }
   };
 
-  const handleCheckDelete = () =>{
+  // 선택한 장바구니 항목별 삭제 DELETE 요청
+  const handleCheckDelete = () => {
     isCheck.forEach(id => {
       fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
         method: "DELETE"
@@ -119,7 +140,7 @@ export default function CartTable() {
             </div>
           </div>
         </div>
-          <CartTableFooter totalPrice = {totalPrice}/>
+        <CartTableFooter orderItems={checkItems} totalPrice={totalPrice} />
       </div>
     </div>
   );

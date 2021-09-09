@@ -7,8 +7,8 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
   
   const [ count, setCount ] = useState(data.qty);
 
+  // 장바구니 단일 항목 수량 - UPDATE 요청
   const minusClick = () => {
-    // 장바구니 데이터 UPDATE
     if(count==1) {
       alert('1개 미만으로는 주문할 수 없습니다')
     }
@@ -17,13 +17,19 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
     }
   }
 
+  // 장바구니 단일 항목 수량 + UPDATE 요청
   const plusClick = () => {
-    // 장바구니 데이터 UPDATE
     setCount(count+1)
   }
 
+
+  // 장바구니 단일 항목 DELETE 요청
+  const handleDelete = (id) => {
+    fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
+
   const handleDelete = () => {
     fetch(`/cart-service/carts/user/${sessionStorage.userId}/${data.cartId}`, {
+
       method: "DELETE"
     }).then(
       alert("삭제되었습니다."),
