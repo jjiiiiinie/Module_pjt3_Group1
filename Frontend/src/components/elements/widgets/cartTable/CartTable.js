@@ -16,76 +16,69 @@ export default function CartTable() {
   // checkItems: 장바구니에서 선택된 항목의 리스트 (default: [])
   const [checkItems, setCheckItems] = useState([]);
 
-  // 장바구니 데이터 GET
-  /* 'cartDatas' 포맷
-    [
-      {
-        "id": "5",
-        "name": "Lorem ipsum female coat",
-        "image": ["", ""],
-        "price": 25.5,
-        "discount": 10,
-        "qty": 1,
-        "color": "brown",
-        "size": "m"
-      },
-    ]
-  */
   useEffect(() => {
     axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
     .then(res => {
       setCartDatas(res.data)
-      console.log(res.data)
     })
     .catch(error => console.log(error));
   },[]);
 
+  // useEffect(() => {
+  //   var sum = 0;
+  //   isCheck.forEach(id => {
+  //     cartDatas.filter(data => data.id  === id).map(item =>{
+  //       sum += parseFloat((item.price * ((100-item.discount)/100)).toFixed(2));
+  //     });
+  //   });
+  //   setTotalPrice(sum);
+  // },[isCheck, cartDatas]);
+
+  console.log(cartDatas)
   useEffect(() => {
     var sum = 0;
-    var items = [];
     isCheck.forEach(id => {
-      cartDatas.filter(data => data.id  === id).map(data =>{
-        items.push(item);
-        sum += cartDatas.unitPrice * cartDatas.qty;
+      console.log(id)
+      cartDatas.filter(data => data.cartId  === id).map(item =>{
+        sum += item.unitPrice * item.qty;
       });
     });
     setTotalPrice(sum);
-    setCheckItems(items);
-  }, [isCheck, cartDatas]);
+  },[isCheck, cartDatas]);
 
-  const handleSelectAll = () => {
-    setIsCheckAll(!isCheckAll);
-    setIsCheck(cartDatas.map(li => li.id));
-    if (isCheckAll) {
-      setIsCheck([]);
-    }
-  };
+  // const handleSelectAll = e => {
+  //   setIsCheckAll(!isCheckAll);
+  //   setIsCheck(cartDatas.map(li => li.id));
+  //   if (isCheckAll) {
+  //     setIsCheck([]);
+  //   }
+  // };
 
-  const handleCheck = (e) => {
+  const handleCheck = e => {
     const { id, checked } = e.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(cartDatas => cartDatas !== id));
+      setIsCheck(isCheck.filter(item => item !== id));
     }
   };
 
-  // 선택한 장바구니 항목별 삭제 DELETE 요청
-  const handleCheckDelete = () => {
+  const handleCheckDelete = () =>{
     isCheck.forEach(id => {
-      fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
-        method: "DELETE"
-      }).then(
-        alert("삭제되었습니다."),
-        fetch(`http://${process.IP}:${process.PORT}/cart`)
-        .then(res => {
-          return res.json();
-        })
-        .then(data => {
-          setCartDatas(data);
-        })
-      )
-    })
-  };
+      console.log(id)
+      // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
+      //   method: "DELETE"
+      // }).then(
+      //   alert("삭제되었습니다."),
+      //   fetch(`http://${process.IP}:${process.PORT}/cart`)
+      //   .then(res => {
+      //     return res.json();
+      //   })
+      //   .then(data => {
+      //     setCartDatas(data);
+      //   })
+      // )
+  })
+};
   
   return(
     <div className="cart-main-area pt-90 pb-100">
@@ -108,12 +101,12 @@ export default function CartTable() {
                 </thead>
                 <tbody>
                   {
-                    cartDatas.map(cartDatas => (
+                    cartDatas.map(cartData => (
                       <CartListView 
-                        data = {cartDatas}
+                        data = {cartData}
                         setCartDatas = {setCartDatas}
                         handleCheck = {handleCheck}
-                        isChecked = {isCheck.includes(cartDatas.cartId)}
+                        // isChecked = {isCheck.includes(cartData.productId)}
                       />
                     ))
                   }
@@ -127,7 +120,7 @@ export default function CartTable() {
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
               <div className="col-3 row align-cartDatass-center cart-select-all">
-                <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input>
+                {/* <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input> */}
                 <label className="col-8 m-0">Select All</label>
               </div>
               <div className="col-3 cart-delete-selected">

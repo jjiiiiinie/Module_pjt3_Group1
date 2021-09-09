@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 export default function Menu() {
 
   return(
-    <div className="col-xl-8 col-lg-8 d-none d-lg-block">
+    <div className="col-xl-6 col-lg-8 d-none d-lg-block">
       <div className="main-menu">
         <div className="px-4">
           {sessionStorage.email}님

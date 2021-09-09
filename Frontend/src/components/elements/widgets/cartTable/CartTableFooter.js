@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Link } from "react-router-dom";
 
 export default function CartTableFooter({ orderItems, totalPrice }) {
-
+  // console.log("or", orderItems)
   return (
     <div className="row">
       <div className="col-lg-4 col-md-6" />

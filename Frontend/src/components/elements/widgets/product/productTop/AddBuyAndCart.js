@@ -19,13 +19,13 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
   }
 
   const handlePutCartList = (e) => {
-    let url = '/cart-service/carts'
+    let url = `/cart-service/carts/`
     let Item = {
       'productId' : productId,
       'qty' : count,
       'unitPrice' : unitPrice,
       'totalPrice' : count * unitPrice,
-      'userId' : 1
+      'userId' : sessionStorage.userId
     }
     var config = {
       headers:{
