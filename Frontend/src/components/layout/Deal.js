@@ -8,11 +8,11 @@ export default function Deal() {
   const [ categoryName, setCategoryName ] = useState("인문");
   let sliceNumber = 12;
   let columnNumber = 3;
-  
+
   return(
     <section id="deal">
       <div className="container">
-        <Title title = "오늘의 책"></Title>
+        <Title title = "국내도서"></Title>
         <Tab 
           setCategoryName = {setCategoryName}
           category = {categoryName} 

@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -71,40 +72,49 @@ public class UsersController {
 
     @ApiOperation(value="로그인", notes="securtiy를 사용하지 않고 로그인")
     @PostMapping("/nosec/login")
-    public ResponseEntity login(@RequestBody @Valid RequestLogin user, HttpServletResponse response){
+    public ResponseEntity login(@RequestBody @Valid RequestLogin user, HttpServletResponse response, HttpServletRequest req){
+
+        UserDto userDto = userService.checkUserByEmail(user);
 
         // 계정 검사
         String token = Jwts.builder()
-                .claim("email", user.getEmail())
-                .claim("id", "아이디 디비검색해서 가져오기")
-                .claim("userId", "유저아이디 검색해서 가져오기")
+                .claim("email", userDto.getEmail())
+                .claim("userId", userDto.getUserId())
 //                        .setSubject(userDetails.getEmail()).setSubject(String.valueOf(userDetails.getId())).setSubject(userDetails.getUserId())
                 .setExpiration(new Date(System.currentTimeMillis() + Long.parseLong(env.getProperty("token.expiration_time"))))
                 .signWith(SignatureAlgorithm.HS512, env.getProperty("token.secret"))
                 .compact();
-        System.out.println(env.getProperty("token.secret"));
-        response.addHeader("token", token);
-//todo cookie 필요할 수도 있음
-//        response.addCookie("token", token);
-        response.addHeader("userId", "디비검색해서 보내주기");
-        
-        
-        log.info("no security login");
+//
+//        response.addHeader("token", token);
+//        response.addHeader("userId", String.valueOf(userDto.getUserId()));
+//        response.addHeader("email", userDto.getEmail());
+
+//        Cookie jwtCookie = new Cookie("access-token", token);
+//        jwtCookie.setSecure(false);
+//        jwtCookie.setHttpOnly(true);
+//        jwtCookie.setMaxAge(Integer.MAX_VALUE);
+//        jwtCookie.setPath("/nosec/login");
+//        response.addCookie(jwtCookie);
+
+//        log.info("no security login");
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        log.info("/users post 요청");
-        UserDto userDto = mapper.map(user, UserDto.class);
-//        userService.createUser(userDto);
+        log.info("/users post 로그인 요청");
+
+        log.info(req.getHeader("email"));
+        log.info(req.getHeader("userId"));
 
         ResponseUser responseUser = mapper.map(userDto, ResponseUser.class);
+        responseUser.setToken(token);
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(responseUser);
     }
 
     //전체 사용자 목록
-    @ApiOperation(value="로그인", notes="securtiy를 사용하여 로그인")
+    @ApiOperation(value="전체사용자 목록", notes="전체사용자 목록")
     @GetMapping("/users")
-    public ResponseEntity<List<ResponseUser>> getUser(){
+    public ResponseEntity<List<ResponseUser>> getUser(HttpServletRequest req){
         Iterable<UserEntity> users = userService.getUserByAll();
 
         ModelMapper mapper = new ModelMapper();
@@ -112,14 +122,16 @@ public class UsersController {
 
         List<ResponseUser> responseUsers = new ArrayList<>();
         users.forEach(v -> new ModelMapper().map(v, ResponseUser.class));
-
+//        for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();)
+//
+//            System.out.println(e.nextElement());
         return ResponseEntity.status(HttpStatus.OK).body(responseUsers);
     }
 
     // 사용자 상세보기 (with 주문 목록)
     @ApiOperation(value="유저의 주문 내역", notes="유저의 모든 주문 내역")
     @GetMapping("/users/{userId}")
-    public ResponseEntity<ResponseUser> getUser(@PathVariable String userId){
+    public ResponseEntity<ResponseUser> getUser(@PathVariable Long userId){
         UserDto userDto = userService.getUserByUserId(userId);
 
         ResponseUser returnValue = new ModelMapper().map(userDto, ResponseUser.class);

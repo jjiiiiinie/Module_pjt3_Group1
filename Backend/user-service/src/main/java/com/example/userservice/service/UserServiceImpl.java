@@ -4,6 +4,7 @@ import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.UserEntity;
 import com.example.userservice.jpa.UserRepository;
+import com.example.userservice.vo.RequestLogin;
 import com.example.userservice.vo.ResponseOrder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,10 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreaker;
 import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,6 +37,27 @@ public class UserServiceImpl implements UserService{
     private final OrderServiceClient orderServiceClient;
     private final CircuitBreakerFactory circuitBreakerFactory;
 
+    //no securtiy
+    @Override
+    public UserDto checkUserByEmail(RequestLogin requestLogin) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(requestLogin.getEmail());
+
+        if(userEntity == null){
+            throw new UsernameNotFoundException(String.format("%s : not found", requestLogin.getEmail()));
+        }
+
+        if(!bCryptPasswordEncoder.matches(requestLogin.getPassword(), userEntity.getEncryptedPwd())){
+            throw new BadCredentialsException(requestLogin.getEmail());
+        }
+
+        ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+        UserDto userDto =  mapper.map(userEntity, UserDto.class);
+
+
+        return userDto;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email);
@@ -56,7 +76,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserDto createUser(UserDto userDto) {
-        userDto.setUserId(UUID.randomUUID().toString());
+//        userDto.setUserId(UUID.randomUUID().toString());
 
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
@@ -71,7 +91,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserDto getUserByUserId(String userId) {
+    public UserDto getUserByUserId(Long userId) {
         UserEntity userEntity = userRepository.findByUserId(userId);
 
         if(userEntity == null){
@@ -82,6 +102,7 @@ public class UserServiceImpl implements UserService{
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         UserDto userDto = mapper.map(userEntity, UserDto.class);
 
+        //todo user 주문 목록 가져오기
 //        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
 //        //String orderUrl = String.format(env.getProperty("order_service.url"), userId);
 //        ResponseEntity<List<ResponseOrder>> orderListResponse =
@@ -94,13 +115,13 @@ public class UserServiceImpl implements UserService{
 //        List<ResponseOrder> orderList = orderServiceClient.getOrder(userId);
 
         /*circuit Breaker */
-        log.info("Before call order-service");
-        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
-        List<ResponseOrder> orderList = circuitBreaker.run(() -> orderServiceClient.getOrder(userId),
-                throwable -> new ArrayList<>());
-        log.info("After call order-service");
+//        log.info("Before call order-service");
+//        CircuitBreaker circuitBreaker = circuitBreakerFactory.create("circuitbreaker");
+//        List<ResponseOrder> orderList = circuitBreaker.run(() -> orderServiceClient.getOrder(userId),
+//                throwable -> new ArrayList<>());
+//        log.info("After call order-service");
 
-        userDto.setOrders(orderList);
+//        userDto.setOrders(orderList);
 
         return userDto;
     }

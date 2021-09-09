@@ -5,8 +5,8 @@ import axios from "axios";
 
 export default function CartTable() {
 
-  var process = require('../../../../myprocess.json');
-  const [cartDatas, setCartDatas] = useState([]);
+  const [ cartDatas, setCartDatas ] = useState([]);
+
   // isCheckAll: 장바구니 항목 전체 선택 여부 (default: false)
   const [isCheckAll, setIsCheckAll] = useState(false);
   // isCheck: 장바구니에서 선택된 항목의 id 리스트 (default: [])
@@ -32,31 +32,28 @@ export default function CartTable() {
     ]
   */
   useEffect(() => {
-    fetch(`http://${process.IP}:${process.PORT}/cart`)
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        setCartDatas(data);
-      })
-    // .catch(error => console.log(error));
-  }, [process.IP, process.PORT]);
+    axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
+    .then(res => {
+      setCartDatas(res.data)
+      console.log(res.data)
+    })
+    .catch(error => console.log(error));
+  },[]);
 
-  // 장바구니에서 선택한 항목 가격 총합 계산 
   useEffect(() => {
     var sum = 0;
     var items = [];
     isCheck.forEach(id => {
-      cartDatas.filter(data => data.id === id).map(item => {
+      cartDatas.filter(data => data.id  === id).map(data =>{
         items.push(item);
-        sum += parseFloat((item.price * ((100 - item.discount) / 100)).toFixed(2));
+        sum += cartDatas.unitPrice * cartDatas.qty;
       });
     });
     setTotalPrice(sum);
     setCheckItems(items);
   }, [isCheck, cartDatas]);
 
-  const handleSelectAll = e => {
+  const handleSelectAll = () => {
     setIsCheckAll(!isCheckAll);
     setIsCheck(cartDatas.map(li => li.id));
     if (isCheckAll) {
@@ -64,37 +61,36 @@ export default function CartTable() {
     }
   };
 
-  const handleCheck = e => {
+  const handleCheck = (e) => {
     const { id, checked } = e.target;
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
+      setIsCheck(isCheck.filter(cartDatas => cartDatas !== id));
     }
   };
 
   // 선택한 장바구니 항목별 삭제 DELETE 요청
   const handleCheckDelete = () => {
     isCheck.forEach(id => {
-      // console.log(id)
-      // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
-      //   method: "DELETE"
-      // }).then(
-      //   alert("삭제되었습니다."),
-      //   fetch(`http://${process.IP}:${process.PORT}/cart`)
-      //   .then(res => {
-      //     return res.json();
-      //   })
-      //   .then(data => {
-      //     setCartDatas(data);
-      //   })
-      // )
+      fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
+        method: "DELETE"
+      }).then(
+        alert("삭제되었습니다."),
+        fetch(`http://${process.IP}:${process.PORT}/cart`)
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          setCartDatas(data);
+        })
+      )
     })
   };
-
-  return (
+  
+  return(
     <div className="cart-main-area pt-90 pb-100">
       <div className="container">
-        <h3 className="cart-page-title">Your cart items</h3>
+        <h3 className="cart-page-title">Your cart cartDatass</h3>
         <div className="row">
           <div className="col-12">
             <div className="table-content table-responsive cart-table-content">
@@ -112,12 +108,12 @@ export default function CartTable() {
                 </thead>
                 <tbody>
                   {
-                    cartDatas.map(item => (
-                      <CartListView
-                        data={item}
-                        setCartDatas={setCartDatas}
-                        handleCheck={handleCheck}
-                        isChecked={isCheck.includes(item.id)}
+                    cartDatas.map(cartDatas => (
+                      <CartListView 
+                        data = {cartDatas}
+                        setCartDatas = {setCartDatas}
+                        handleCheck = {handleCheck}
+                        isChecked = {isCheck.includes(cartDatas.cartId)}
                       />
                     ))
                   }
@@ -130,7 +126,7 @@ export default function CartTable() {
         <div className="row">
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
-              <div className="col-3 row align-items-center cart-select-all">
+              <div className="col-3 row align-cartDatass-center cart-select-all">
                 <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input>
                 <label className="col-8 m-0">Select All</label>
               </div>

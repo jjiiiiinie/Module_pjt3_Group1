@@ -8,8 +8,8 @@ import java.util.List;
 
 @Data
 public class UserDto {
-    private Long id;
-    private String userId;
+    private Long userId;
+//    private String userId;
     private String pwd;
     private String email;
     private String name;

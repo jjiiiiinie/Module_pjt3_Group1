@@ -38,14 +38,20 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
             String authorizationHeader = request.getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
             String jwt = authorizationHeader.replace("Bearer", "");
 
-            System.out.println(jwt);
             if(!isJwtValid(jwt)){
                 return onError(exchange, "JWT token is not valid", HttpStatus.UNAUTHORIZED); // 401
             }
-            exchange.getResponse().getHeaders().add("id", claims.get("id").toString());
+
             exchange.getResponse().getHeaders().add("userId", claims.get("userId").toString());
             exchange.getResponse().getHeaders().add("email", claims.get("email").toString());
-            return chain.filter(exchange);
+
+//            val mutatedRequest = exchange.request.mutate().header(HttpHeaders.AUTHORIZATION, "Bearer $authHeader").build()
+//            val mutatedExchange = exchange.mutate().request(mutatedRequest).build()
+            ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header("userId", claims.get("userId").toString()).header("email", claims.get("email").toString()).build();
+            ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
+//            exchange.getRequest().getHeaders().add("userId", claims.get("userId").toString());
+//            exchange.getRequest().getHeaders().add("email", claims.get("email").toString());
+            return chain.filter(mutateExchange);
 
         };
     }
