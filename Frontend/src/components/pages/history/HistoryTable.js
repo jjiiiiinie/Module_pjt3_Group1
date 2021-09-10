@@ -3,48 +3,47 @@ import HistoryListView from "./HistoryListView";
 import axios from 'axios';
 
 export default function HistoryTable() {
-  const [keyword, setKeyword] = useState('');
+  const date = new Date().toISOString().split('T')[0];
+  const [searchInfo, setSearchInfo] = useState([])
   const [historyDatas, setHistoryDatas] = useState([]);
-  // 주문내역 데이터 GET
-  // 사용자: 로그인된 사용자 정보와 함께 해당 사용자의 주문 내역 응답 GET 요청
-  // 관리자: GET 요청, 응답
-  // 'historyDatas' 포맷
-  /*
-    cartList: [
-      {
-        cartId,
-        productId,
-        qty,
-        unitPrice,
-        totalPrice,
-        userId
-      },
-    ],
-    recipientName: '',
-    recipientAddress: '',
-    recipientPhone: '',
-    senderName: '',
-    senderPhone: '',
-    senderPassword: '',
-    paymentPlan: ''
-  */
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   // 검색 키워드 change state에 반영
-  const handleChange = (e) => {
-    setKeyword(e.target.value);
+  const handleChange = e => {
+    var { name, value } = e.target;
+    setSearchInfo({ ...searchInfo, [name]: value });
   }
 
   // 검색 실행
-  const handleClick = () => {
-    // historyDatas에서 필터링
-    historyDatas.filter()
-
+  const handleClick = (e) => {
+    console.log(searchInfo.keyword);
+    console.log(searchInfo.start);
+    console.log(searchInfo.end);
+    // axios.get(`order-service/${sessionStorage.user_id}/orders/keyword`,
+    //   {
+    //     value: searchInfo,
+    //     start: '',
+    //     end: '',
+    //     headers: {
+    //       Authorization: sessionStorage.token
+    //     }
+    //   })
+    //   .then(res => {
+    //     setHistoryDatas(res.data);
+    //   })
+    //   .catch()
   }
 
   useEffect(() => {
     // 세션 정보별 사용자/관리자 구분
-    if (sessionStorage.userId !== undefined && sessionStorage.userId.includes("admin")) {
-      axios.get(`/order-service/orders`)
+    if (sessionStorage.userId !== undefined && sessionStorage.email.includes("admin")) {
+      axios.get(`/order-service/orders`,
+        {
+          headers: {
+            Authorization: sessionStorage.token
+          }
+        })
         .then(res => {
           console.log(res.data);
           setHistoryDatas(res.data);
@@ -52,7 +51,12 @@ export default function HistoryTable() {
         .catch()
     }
     else {
-      axios.get(`/order-service/${sessionStorage.userId}/orders`)
+      axios.get(`/order-service/${sessionStorage.userId}/orders`,
+        {
+          headers: {
+            Authorization: sessionStorage.token
+          }
+        })
         .then(res => {
           console.log(res.data);
           setHistoryDatas(res.data);
@@ -66,8 +70,13 @@ export default function HistoryTable() {
     <div className="cart-main-area pt-90 pb-100">
       <div className="container">
         <h3 className="cart-page-title">Order History</h3>
-        <div className="mb-1 order-search-box row col-12">
-          <input className="col-3" type="text" onChange={handleChange} />
+        <div className="order-search-box mb-1 row col-12">
+          <label className="col-1">키워드</label>
+          <input className="col-2" type="text" name="keyword" onChange={handleChange} />
+          <label className="col-1 col-offset-1">날짜</label>
+          <input className="col-2" type="date" name="start" min="2018-01-01" max={date} onChange={handleChange} />
+          ~
+          <input className="col-2" type="date" name="end" min="2018-01-01" max={date} onChange={handleChange} />
           <button className="col-1" type="button" onClick={handleClick}>검색</button>
         </div>
         <div className="row">

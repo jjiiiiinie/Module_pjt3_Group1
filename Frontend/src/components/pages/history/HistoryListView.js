@@ -1,24 +1,28 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function HistoryListView({ data }) {
-    const [status, setStatus] = useState(data.order_state);
+    const [newState, setNewState] = useState('');
 
-
-    const handleChange = (e) => {
+    const handleChange = e => {
         console.log(e.target.value());
-        setStatus(e.target.value);
+        setNewState(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = e => {
         e.preventDefault();
         // 선택된 status 백엔드에 반영 요청
-        axios.put(`/order-service/orders/${data.orderId}`, { orderId: data.orderId, newStatus: status })
-            .then(res => {
-                console.log(res.data);
-            })
-            .catch()
+        // axios.put(`/order-service/orders/${sessionStorage.orderId}/state/${newState}`,
+        //     {
+        //         headers: {
+        //             Authorization: sessionStorage.token
+        //         }
+        //     })
+        //     .then(res => {
+        //         console.log(res.data);
+        //     })
+        //     .catch()
     }
 
     return (
@@ -38,11 +42,11 @@ export default function HistoryListView({ data }) {
             <td className="order-date">
                 {data.created_at}
             </td>
-            
+
             <td className="order-status-select">
                 {
-                    sessionStorage.userId !== undefined && sessionStorage.userId.includes('admin') ?
-                        <select value={status} onChange={handleChange}>
+                    sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
+                        <select value={data.order_state} onChange={handleChange}>
                             <option value="1">결제 완료</option>
                             <option value="2">배송 중</option>
                             <option value="3">배송 완료</option>
@@ -57,7 +61,7 @@ export default function HistoryListView({ data }) {
                     </td> :
                     null
             }
-           
+
         </tr>
     );
 }
