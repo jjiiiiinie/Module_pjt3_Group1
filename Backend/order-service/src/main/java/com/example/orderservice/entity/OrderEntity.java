@@ -5,7 +5,7 @@ import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Entity
@@ -23,6 +23,8 @@ public class OrderEntity implements Serializable {
     private Long userId;
     @Column(nullable = false)
     private Long productId;
+    @Column(nullable = false)
+    private String productName;
     @Column(nullable = false)
     private Integer qty;
     @Column(nullable = false)
@@ -46,8 +48,12 @@ public class OrderEntity implements Serializable {
 
     @Column(nullable = false)
     private String paymentPlan;
+    @Column(nullable = false)
+    private Integer orderState;
 
     @Column(updatable = false, insertable = false)
     @ColumnDefault(value = "CURRENT_TIMESTAMP")
-    private Date createdAt;
+    private LocalDate createdAt;
+
+
 }

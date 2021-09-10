@@ -36,11 +36,11 @@ export default function SideMenu() {
   return(
     <div className="col-xl-2 col-lg-2 col-md-6 col-8">
       <div className="header-right-wrap ">
-        <button type="button" onClick="/productnew">상품등록</button>
-        <button type="button" onClick="/orderlist">주문내역</button>
-        <button type="button" onClick={Logout}>로그아웃</button>
-        <button type="button" onClick="/myaccount">로그인</button>
-        <button type="button" onClick="/cart">장바구니</button>
+        <button type="button"><a href='/productnew'>상품등록</a></button>
+        <button type="button"> <a href="/orderlist">주문내역</a></button>
+        {/* <button type="button" onClick={Logout}>로그아웃</button> */}
+        <button type="button"> <a href="/myaccount">로그인</a></button>
+        <button type="button"> <a href="/cart">장바구니</a></button>
         {/* {sideList} */}
         {/* 햄버거 */}
         <div className="same-style mobile-off-canvas d-block d-lg-none">
