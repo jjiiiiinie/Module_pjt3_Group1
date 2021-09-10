@@ -6,8 +6,6 @@ export default function HistoryTable() {
   const date = new Date().toISOString().split('T')[0];
   const [searchInfo, setSearchInfo] = useState([])
   const [historyDatas, setHistoryDatas] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
 
   // 검색 키워드 change state에 반영
   const handleChange = e => {
@@ -20,19 +18,30 @@ export default function HistoryTable() {
     console.log(searchInfo.keyword);
     console.log(searchInfo.start);
     console.log(searchInfo.end);
-    // axios.get(`order-service/${sessionStorage.user_id}/orders/keyword`,
-    //   {
-    //     value: searchInfo,
-    //     start: '',
-    //     end: '',
-    //     headers: {
-    //       Authorization: sessionStorage.token
-    //     }
-    //   })
-    //   .then(res => {
-    //     setHistoryDatas(res.data);
-    //   })
-    //   .catch()
+    if (searchInfo.start !== undefined && searchInfo.end !== undefined)
+      axios.get(`order-service/orders/date`,
+        {
+          start: searchInfo.start,
+          end: searchInfo.end,
+          headers: {
+            Authorization: sessionStorage.token
+          }
+        })
+        .then(res => {
+          setHistoryDatas(res.data);
+        })
+        .catch()
+    if (searchInfo.keyword !== undefined)
+      axios.get(`order-service/orders/${searchInfo.keyword}`,
+        {
+          headers: {
+            Authorization: sessionStorage.token
+          }
+        })
+        .then(res => {
+          setHistoryDatas(res.data);
+        })
+        .catch()
   }
 
   useEffect(() => {
