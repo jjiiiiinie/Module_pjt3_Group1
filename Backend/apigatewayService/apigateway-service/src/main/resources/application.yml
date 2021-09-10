@@ -43,31 +43,7 @@ spring:
             - RewritePath=/user-service/(?<segment>.*), /$\{segment}
         - id: user-service
           predicates:
-            - Path=/user-service/api/ip
-            - Method=POST
-          uri: lb://USER-SERVICE
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
-          predicates:
-            - Path=/user-service/nosec/login
-            - Method=POST
-          uri: lb://USER-SERVICE
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
-          predicates:
-            - Path=/user-service/login
-            - Method=POST
-          uri: lb://USER-SERVICE
-          filters:
-            - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
-        - id: user-service
-          predicates:
-            - Path=/user-service/users
+            - Path=/user-service/nosec/login, /user-service/users
             - Method=POST
           uri: lb://USER-SERVICE
           filters:
@@ -93,6 +69,14 @@ spring:
         - id: catalog-service
           uri: lb://CATALOG-SERVICE
           predicates:
+            - Path=/catalog-service/catalogs/**
+            - Method=POST, PUT, DELETE
+          filters:
+            - RewritePath=/catalog-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
+        - id: catalog-service
+          uri: lb://CATALOG-SERVICE
+          predicates:
             - Path=/catalog-service/**
           filters:
             - RewritePath=/catalog-service/(?<segment>.*), /$\{segment}
@@ -102,6 +86,7 @@ spring:
             - Path=/order-service/**
           filters:
             - RewritePath=/order-service/(?<segment>.*), /$\{segment}
+            - AuthorizationHeaderFilter
         - id: cart-service
           uri: lb://CART-SERVICE
           predicates:

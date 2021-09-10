@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -122,9 +123,10 @@ public class UsersController {
 
         List<ResponseUser> responseUsers = new ArrayList<>();
         users.forEach(v -> new ModelMapper().map(v, ResponseUser.class));
-//        for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();)
-//
-//            System.out.println(e.nextElement());
+        for (Enumeration<String> e = req.getHeaderNames(); e.hasMoreElements();) {
+            String name = e.nextElement();
+            log.info("{} : {}", name, req.getHeader(name));
+        }
         return ResponseEntity.status(HttpStatus.OK).body(responseUsers);
     }
 

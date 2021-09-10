@@ -56,4 +56,9 @@ public class CatalogServiceImpl implements CatalogService{
         repository.save(catalogEntity);
         return null;
     }
+
+    @Override
+    public void deleteByCartId(Long productId) {
+        repository.deleteById(productId);
+    }
 }

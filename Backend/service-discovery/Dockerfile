@@ -11,7 +11,7 @@ RUN mkdir /myapp
 
 WORKDIR /myapp
 
-COPY ./target/ecoomerce-1.0.jar ./service-discovery.jar
+COPY ./target/service-discovery-1.0.jar ./service-discovery.jar
 
 EXPOSE 8761
 
