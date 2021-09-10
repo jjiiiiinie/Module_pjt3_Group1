@@ -58,6 +58,7 @@ export default function ProductNewDetail() {
     axios.post(url, Product, config)
     .then((res)=>{
       alert("상품등록완료")
+      // return window.location.href('/')
       console.log(res);
     }).catch(err => {
       alert("상품등록실패")

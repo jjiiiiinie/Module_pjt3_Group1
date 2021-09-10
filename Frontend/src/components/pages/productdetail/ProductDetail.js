@@ -15,7 +15,6 @@ export default function ProductDetail() {
   
   useEffect(() => {
     axios.get(`/catalog-service/catalogs/client/${newUrl}`)
-    // axios.get(`/catalog-service/catalogs/client/${sessionStorage.userId}`)
     .then(res => {
       setbooks(res.data);
     })

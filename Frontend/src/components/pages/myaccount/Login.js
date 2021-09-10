@@ -48,6 +48,7 @@ export default function Login() {
     var config={
       header:{
         'Content-Type' : 'application/json',
+        // 'token' : sessionStorage.token
       }
     }
     axios.post(url, User, config, {withCredentials: true})
@@ -67,13 +68,15 @@ export default function Login() {
         sessionStorage.setItem('email', res.data.email)
         sessionStorage.setItem('token', res.data.token)
         sessionStorage.setItem('userId', res.data.userId)
-
     }
+    // axios.get('/user-service/users', )
     // 작업 완료 되면 페이지 이동(새로고침)
-    // document.location.href = '/'
-})
-.catch()
-}
+    // axios.post()
+    document.location.href = '/'
+    
+  })
+  .catch()
+  }
 
   return(
     <div className="accordion-item single-my-account mb-20 card">

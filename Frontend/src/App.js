@@ -4,6 +4,7 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './components/pages/home/Home'
 import ProductDetail from './components/pages/productdetail/ProductDetail';
 import Cart from './components/pages/cart/Cart';
+import Order from './components/pages/order/Order';
 import ProductList from './components/pages/product/ProductList';
 import MyAccount from './components/pages/myaccount/MyAccount';
 import ReduxSample from './components/pages/reduxsample/ReduxSample';
@@ -26,8 +27,8 @@ import axios from 'axios';
 
 
 function App()  {
-  // axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
-  axios.defaults.baseURL = 'http://localhost:8000' // 내 서버
+  axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
+  // axios.defaults.baseURL = 'http://localhost:8000' // 내 서버
 
   return (
     <BrowserRouter>
@@ -36,6 +37,7 @@ function App()  {
           <Route exact path="/"><Home /></Route>
           <Route exact path="/productdetail/:productId"><ProductDetail /></Route>
           <Route exact path="/cart"><Cart /></Route>
+          <Route exact path="/order"><Order /></Route>
           <Route exact path="/productlist"><ProductList /></Route>
           <Route exact path="/myaccount"><MyAccount /></Route>
           <Route exact path="/productnew"><ProductNew /></Route>
