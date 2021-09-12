@@ -1,9 +1,18 @@
 import axios from "axios";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function AddBuyAndCart({stock, productId, unitPrice}) {
 
   const [ count, setCount ] = useState(1);
+
+  const [ cartDatas, setCartDatas ] = useState([]);
+  useEffect(() => {
+    axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
+    .then(res => {
+      setCartDatas(res.data)
+    })
+    .catch(error => console.log(error));
+  },[]); 
 
   const handleCountAdd = () => {
     setCount(count+1)
@@ -17,9 +26,9 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
       setCount(count-1)
     }
   }
-
+  console.log("cartsss",cartDatas)
   const handlePutCartList = (e) => {
-    let url = `/cart-service/carts/`
+    let url = '/cart-service/carts/'
     let Item = {
       'productId' : productId,
       'qty' : count,
@@ -32,14 +41,20 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
         "Content-Type" : "application/json",
       }
     }
-    axios.post(url, Item, config)
-    .then((res) => {
-      alert("카트에 상품이 담겼습니다.")
-      console.log(res)
-    }).catch((err) => {
-      alert("상품 담기 실패")
-      console.log(err);
-    })
+    if (cartDatas.map(cartdata => cartdata.productId==productId)){
+      alert("이미 장바구니에 담긴 상품입니다.")
+      return
+    }
+    else (
+      axios.post(url, Item, config)
+      .then((res) => {
+        alert("카트에 상품이 담겼습니다.")
+        console.log(res)
+      }).catch((err) => {
+        alert("상품 담기 실패")
+        console.log(err);
+      })
+    )
   }
 
   return(

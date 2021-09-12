@@ -70,7 +70,6 @@ export default function ProductDetail() {
                   stock = {books.stock}
                   productId = {books.productId}
                   unitPrice = {books.unitPrice}
-                  // userId = {books.userId}
                 />
                 {/* <ProDetRgtBottom /> */}
                 <div className="pro-details-meta">
