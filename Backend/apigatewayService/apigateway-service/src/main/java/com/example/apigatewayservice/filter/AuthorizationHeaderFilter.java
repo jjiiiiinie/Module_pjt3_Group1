@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.Enumeration;
+
 @Component
 @Slf4j
 public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<AuthorizationHeaderFilter.Config> {
@@ -30,6 +32,7 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
         return (exchange, chain) -> {
             ServerHttpRequest request = exchange.getRequest();
 
+            //todo token을 autrization을 사용안하면, token이란 헤더에서 가져와야함
             if(!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)){
                 return onError(exchange, "No authorization header", HttpStatus.UNAUTHORIZED); // 401
             }
@@ -44,13 +47,12 @@ public class AuthorizationHeaderFilter extends AbstractGatewayFilterFactory<Auth
 
             exchange.getResponse().getHeaders().add("userId", claims.get("userId").toString());
             exchange.getResponse().getHeaders().add("email", claims.get("email").toString());
-
-//            val mutatedRequest = exchange.request.mutate().header(HttpHeaders.AUTHORIZATION, "Bearer $authHeader").build()
-//            val mutatedExchange = exchange.mutate().request(mutatedRequest).build()
+            
+            // exchange.getRequest().getHeaders() = readableHttpOnly이므로 헤더 추가나 수정 불가능
+            // 아래와 같이 만들어줘야함
             ServerHttpRequest mutateRequest = exchange.getRequest().mutate().header("userId", claims.get("userId").toString()).header("email", claims.get("email").toString()).build();
             ServerWebExchange mutateExchange = exchange.mutate().request(mutateRequest).build();
-//            exchange.getRequest().getHeaders().add("userId", claims.get("userId").toString());
-//            exchange.getRequest().getHeaders().add("email", claims.get("email").toString());
+
             return chain.filter(mutateExchange);
 
         };

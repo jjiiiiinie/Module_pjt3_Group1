@@ -1,11 +1,21 @@
-import React from 'react';
+import React ,{useEffect, useState} from 'react';
 import OrderListView from './OrderListView';
 
 
 export default function CartContainer({ orderItems }) {
 
+  const [ total, setTotal ] = useState([]);
+
+  useEffect(() => {
+    var sum = 0;
+    orderItems.map(orderItem => {
+      sum += orderItem.totalPrice;
+    })
+    setTotal(sum)
+  },[])
+
   return (
-    <div className="cart-main-area pt-90 pb-100">
+    <div className="cart-main-area pt-90">
       <div className="container">
         <h3 className="cart-page-title">Your cart items</h3>
         <div className="row">
@@ -34,25 +44,15 @@ export default function CartContainer({ orderItems }) {
         </div>
 
         <div className="row">
-          <div className="col-lg-12">
-            <div className="cart-shiping-update-wrapper">
-              <div className="col-3 px-0 text-center cart-shiping-update">
-                <a href="/">Continue Shopping</a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="col-lg-4 col-md-6" />
-          <div className="col-lg-4 col-md-6" />
+          <div className="col-lg-8 col-md-6" />
           <div className="col-lg-4 col-md-12">
             <div className="grand-totall">
               <div className="title-wrap">
                 <h4 className="cart-bottom-title section-bg-gary-cart">Cart Total</h4>
               </div>
-              {/* <h5>Total products <span>${totalPrice}</span></h5> */}
-              {/* <h4 className="grand-totall-title">Grand Total <span>${totalPrice}</span></h4> */}
+
+              <h5>Total products <span>{total}</span></h5>
+              <h4 className="grand-totall-title">Grand Total <span>{total}</span></h4>
             </div>
           </div>
         </div>

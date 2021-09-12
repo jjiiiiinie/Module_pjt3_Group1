@@ -4,6 +4,7 @@ import com.example.orderservice.dto.CartDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class ResponseOrder {
     private Long userId;
 
     private Long productId;
+    private String productName;
     private Integer qty;
     private Integer unitPrice;
     private Integer totalPrice;
@@ -33,4 +35,7 @@ public class ResponseOrder {
     private String sender_password;
 
     private String paymentPlan;
+    private Integer orderState;
+
+    private LocalDate createdAt;
 }

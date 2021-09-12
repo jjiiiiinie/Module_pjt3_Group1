@@ -6,7 +6,6 @@ import axios from "axios";
 export default function CartTable() {
 
   const [ cartDatas, setCartDatas ] = useState([]);
-
   // isCheckAll: 장바구니 항목 전체 선택 여부 (default: false)
   const [isCheckAll, setIsCheckAll] = useState(false);
   // isCheck: 장바구니에서 선택된 항목의 id 리스트 (default: [])
@@ -16,33 +15,37 @@ export default function CartTable() {
   // checkItems: 장바구니에서 선택된 항목의 리스트 (default: [])
   const [checkItems, setCheckItems] = useState([]);
 
+  
   useEffect(() => {
     axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
     .then(res => {
       setCartDatas(res.data)
     })
     .catch(error => console.log(error));
-  },[]);
-
-  // useEffect(() => {
-  //   var sum = 0;
-  //   isCheck.forEach(id => {
-  //     cartDatas.filter(data => data.id  === id).map(item =>{
-  //       sum += parseFloat((item.price * ((100-item.discount)/100)).toFixed(2));
-  //     });
-  //   });
-  //   setTotalPrice(sum);
-  // },[isCheck, cartDatas]);
+  },[]); 
 
   useEffect(() => {
     var sum = 0;
+    let Items = {
+      'productId' : '',
+      'qty' : '',
+      'unitPrice' : '',
+      'totalPrice' : '',
+      'userId' : sessionStorage.userId
+    }
     isCheck.forEach(id => {
-      cartDatas.filter(data => data.cartId  === id).map(item =>{
-        sum += item.unitPrice * item.qty;
+      cartDatas.filter(data => data.productId == id).map(item =>{
+        sum += item.totalPrice;
+        Items.productId = item.productId;
+        Items.qty = item.qty;
+        Items.unitPrice = item.unitPrice;
+        Items.totalPrice = item.totalPrice;
       });
     });
     setTotalPrice(sum);
+    setCheckItems(Items)
   },[isCheck, cartDatas]);
+  console.log("check", checkItems)
 
   // const handleSelectAll = e => {
   //   setIsCheckAll(!isCheckAll);
@@ -50,6 +53,9 @@ export default function CartTable() {
   //   if (isCheckAll) {
   //     setIsCheck([]);
   //   }
+    // else {
+    //   setIsCheck([isCheckAll])
+    // }
   // };
 
   const handleCheck = e => {
@@ -59,30 +65,12 @@ export default function CartTable() {
     if (!checked) {
       setIsCheck(isCheck.filter(item => item !== id));
     }
-    console.log(isCheck);
   };
 
-  const handleCheckDelete = () =>{
-    isCheck.forEach(id => {
-      // fetch(`http://${process.IP}:${process.PORT}/cart/${id}`, {
-      //   method: "DELETE"
-      // }).then(
-      //   alert("삭제되었습니다."),
-      //   fetch(`http://${process.IP}:${process.PORT}/cart`)
-      //   .then(res => {
-      //     return res.json();
-      //   })
-      //   .then(data => {
-      //     setCartDatas(data);
-      //   })
-      // )
-  })
-};
-  
   return(
     <div className="cart-main-area pt-90 pb-100">
       <div className="container">
-        <h3 className="cart-page-title">Your cart cartDatass</h3>
+        <h3 className="cart-page-title">Your cart cartDatas</h3>
         <div className="row">
           <div className="col-12">
             <div className="table-content table-responsive cart-table-content">
@@ -103,6 +91,7 @@ export default function CartTable() {
                     cartDatas.map(cartData => (
                       <CartListView 
                         data = {cartData}
+                        // handleqty = {handleqty}
                         setCartDatas = {setCartDatas}
                         handleCheck = {handleCheck}
                         isChecked = {isCheck.includes(cartData.productId.toString())}
@@ -118,13 +107,15 @@ export default function CartTable() {
         <div className="row">
           <div className="col-lg-12">
             <div className="cart-shiping-update-wrapper">
-              <div className="col-3 row align-cartDatass-center cart-select-all">
-                {/* <input className="col-4 select-all-checkbox" type="checkbox" onChange={handleSelectAll}></input> */}
+              {/* <div className="col-3 row align-cartDatass-center cart-select-all">
+                <input className="col-4 select-all-checkbox" type="checkbox"
+                  checked={isCheck} 
+                  onChange={handleSelectAll}></input>
                 <label className="col-8 m-0">Select All</label>
-              </div>
-              <div className="col-3 cart-delete-selected">
+              </div> */}
+              {/* <div className="col-3 cart-delete-selected">
                 <button onClick={handleCheckDelete}>Delete Selected</button>
-              </div>
+              </div> */}
               <div className="col-3"></div>
               <div className="col-3 px-0 text-center cart-shiping-update">
                 <a href="/">Continue Shopping</a>
@@ -132,7 +123,12 @@ export default function CartTable() {
             </div>
           </div>
         </div>
-        <CartTableFooter orderItems={checkItems} totalPrice={totalPrice} />
+        <CartTableFooter 
+          orderItems={cartDatas}
+          // 기존코드
+          // orderItems={checkItems} 
+          totalPrice={totalPrice} 
+        />
       </div>
     </div>
   );

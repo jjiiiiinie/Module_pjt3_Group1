@@ -7,4 +7,5 @@ public interface CatalogService {
     Iterable<CatalogEntity> getAllCatalogs();
     CatalogDto createCatalog(CatalogDto catalogDto);
     CatalogDto updateCatalog(CatalogDto catalogDto);
+    void deleteByCartId(Long productId);
 }

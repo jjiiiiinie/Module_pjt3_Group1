@@ -2,33 +2,87 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function CartListView({data, setCartDatas, handleCheck, isChecked}) {
-
-  const [ count, setCount ] = useState(data.qty);
+export default function CartListView({data, setCartDatas, handleCheck, isChecked, handleqty}) {
+  let cnt = data.qty
+  // const [ count, setCount ] = useState(data.qty);
 
   // 장바구니 단일 항목 수량 - UPDATE 요청
   const minusClick = () => {
-    if(count==1) {
-      alert('1개 미만으로는 주문할 수 없습니다')
+    let url = '/cart-service/carts'
+    
+    if (cnt==1) {
+      alert('1개 미만으로는 주문할 수 없습니다.')
     }
     else {
-      setCount(count-1)
+      cnt -= 1
     }
+
+    let Item = 
+      [
+        {
+          'cartId' : data.cartId,
+          'productId' : data.productId,
+          'qty' : cnt,
+          'unitPrice' : data.unitPrice,
+          'totalPrice' : cnt * data.unitPrice,
+          'userId' : sessionStorage.userId
+        }
+      ]
+    
+    var config = {
+      headers:{
+        "Content-Type" : "application/json",
+      }
+    }
+    axios.put(url, Item, config)
+    .then((res) => {
+      console.log(res)
+      window.location.href = "/cart"
+    }).catch((err) => {
+      console.log(err)
+    })
   }
 
   // 장바구니 단일 항목 수량 + UPDATE 요청
   const plusClick = () => {
-    // 재고수량보다 많을 경우 alert
-    setCount(count+1)
+    let url = '/cart-service/carts'
+    if (cnt + 1 > data.stock) {
+      alert('재고 수량이 부족합니다.')
+    }
+    else {
+      cnt += 1
+    }
+    let Item = 
+      [
+        {
+          'cartId' : data.cartId,
+          'productId' : data.productId,
+          'qty' : cnt,
+          'unitPrice' : data.unitPrice,
+          'totalPrice' : cnt * data.unitPrice,
+          'userId' : sessionStorage.userId
+        }
+      ]
+    var config = {
+      headers:{
+        "Content-Type" : "application/json",
+      }
+    }
+    axios.put(url, Item, config)
+    .then((res) => {
+      window.location.href = "/cart"
+      console.log(res)
+    }).catch((err) => {
+      console.log(err)
+    })
   }
-
   // 장바구니 단일 항목 DELETE 요청
 
   const handleDelete = () => {
     let url = `/cart-service/carts/${data.cartId}`
     axios.delete(url)
     .then(
-      alert("삭제되었습니다."),
+      alert("삭제되었습니다.")
       )
       return window.location.reload(`/cart-service/carts/user/${sessionStorage.userId}`);
   }
@@ -62,7 +116,7 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
           >
             -
           </button>
-          <input className="cart-plus-minus-box" type="text" readOnly="" value={count} />
+          <input className="cart-plus-minus-box" type="text" readOnly="" value={cnt} />
           <button 
             className="inc qtybutton"
             onClick={() => plusClick()}
@@ -71,11 +125,10 @@ export default function CartListView({data, setCartDatas, handleCheck, isChecked
           </button>
         </div>
       </td>
-      <td className="product-subtotal">${(data.unitPrice * count)}</td>
+      <td className="product-subtotal">${(data.unitPrice * data.qty)}</td>
       <td className="product-remove">
         <button
           title={data.productId}
-          // onClick={() => handleDelete(data.cartId)}
           onClick={() => handleDelete(data.cartId)}
           value={data.productId}
         >

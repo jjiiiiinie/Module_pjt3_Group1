@@ -11,6 +11,8 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestOrder {
 
+
+
     private List<CartDto> cartList;
 
 
@@ -26,7 +28,6 @@ public class RequestOrder {
     private String senderPhone;
 
     private String senderPassword;
-
 
     private String paymentPlan;
 }

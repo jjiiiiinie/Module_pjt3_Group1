@@ -3,7 +3,7 @@ package com.example.orderservice.dto;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class OrderDto implements Serializable {
@@ -12,6 +12,7 @@ public class OrderDto implements Serializable {
     private Long userId;
 
     private Long productId;
+    private String productName;
     private Integer qty;
     private Integer unitPrice;
     private Integer totalPrice;
@@ -25,6 +26,7 @@ public class OrderDto implements Serializable {
     private String senderPassword;
 
     private String paymentPlan;
+    private Integer orderState;
 
-    private Date createdAt;
+    private LocalDate createdAt;
 }

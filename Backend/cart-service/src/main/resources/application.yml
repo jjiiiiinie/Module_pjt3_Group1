@@ -4,29 +4,29 @@ server:
 spring:
   application:
     name: cart-service
-  h2:
-    console:
-      enabled: true
-      settings:
-        web-allow-others: true
-      path: /h2-console
+#  h2:
+#    console:
+#      enabled: true
+#      settings:
+#        web-allow-others: true
+#      path: /h2-console
   jpa:
     hibernate:
-      ddl-auto: create-drop
+#      ddl-auto: create-drop
 #      ddl-auto: update
     show-sql: true
-    generate-ddl: true
-    database: h2
+#    generate-ddl: true
+#    database: h2
     defer-datasource-initialization: true
   datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb
-    username: sa
-    password:
-#    driver-class-name: org.mariadb.jdbc.Driver
-#    url: jdbc:mariadb://10.10.20.95:13306/mydb
-#    username: root
-#    password: test1357
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+#    password:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://127.0.0.1:3306/mydb
+    username: root
+    password: 1234
   zipkin:
     base-url: http://localhost:9411
     enable: true
