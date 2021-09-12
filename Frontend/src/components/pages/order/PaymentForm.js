@@ -24,12 +24,22 @@ export default function PaymentForm({ orderItems, orderInfo, setOrderInfo }) {
 			// 선택한 상품 목록 추가
 			setOrderInfo({ ...orderInfo, cartList: orderItems });
 			let url = `/order-service/${sessionStorage.userId}/orders`
+			let order = {
+				"cartList": orderItems,
+				"recipientName": orderInfo.recipientName,
+				"recipientAddress": orderInfo.recipientAddress,
+				"recipientPhone": orderInfo.recipientPhone,
+				"senderName": orderInfo.senderName,
+				"senderPhone": orderInfo.senderPhone,
+				"senderPassword": orderInfo.senderPassword,
+				"paymentPlan" : orderInfo.paymentPlan 
+			}
 			var config = {
 				headers:{
 					"Content-Type" : "application/json",
 				}
 			}
-			axios.post(url, orderItems, config)
+			axios.post(url, order, config)
 			.then((res) => {
 				alert("결제완료")
 				window.location.href = '/'
