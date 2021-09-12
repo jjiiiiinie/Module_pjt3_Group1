@@ -3,6 +3,7 @@ import DaumPostcode from 'react-daum-postcode';
 import Modal from 'react-bootstrap/Modal';
 
 export default function ShipmentForm({ orderInfo, setOrderInfo }) {
+	
 	const [show, setShow] = useState(false);
 	const [addressMain, setAddressMain] = useState('');
 
