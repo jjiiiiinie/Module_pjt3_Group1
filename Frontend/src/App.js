@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import Home from './components/pages/home/Home'
@@ -27,8 +27,29 @@ import axios from 'axios';
 
 
 function App()  {
-  axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
-  // axios.defaults.baseURL = 'http://localhost:8000' // 내 서버
+  // axios.defaults.baseURL = 'http://10.10.20.52:8000' // Tmax wifi 광채님 서버
+  axios.defaults.baseURL = 'http://localhost:8000' // 내 서버
+
+  const Parent = (props) => {
+    const [data, setData] = useState("initial data");
+    
+    return (
+      <>
+        <div>{data}</div>
+        <Child setData={setData} />
+      </>
+    );
+  };
+  
+  const Child = (props) => {
+    return (
+      <>
+        <button onClick={() => props.setData("data from child")}>
+          send data to parent
+        </button>
+      </>
+    );
+  };
 
   return (
     <BrowserRouter>
@@ -42,6 +63,7 @@ function App()  {
           <Route exact path="/myaccount"><MyAccount /></Route>
           <Route exact path="/productnew"><ProductNew /></Route>
           <Route exact path="/productnewdetail"><ProductNewDetail /></Route>
+          <Route exact path="/order"><Order /></Route>
           <Provider store={store}>
             <Route exact path="/reduxsample"><ReduxSample /></Route>
           </Provider>

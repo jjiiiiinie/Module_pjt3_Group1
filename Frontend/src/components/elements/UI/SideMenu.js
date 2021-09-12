@@ -51,6 +51,7 @@ export default function SideMenu() {
           <a href="/productnew"><button type="button" className="btn btn-outline-dark">상품등록</button></a>
           {/* <button type="button" className="btn btn-outline-dark"><a href="/orderlist">주문내역</a></button> */}
           <a href="/cart"><button type="button" className="btn btn-outline-dark">장바구니</button></a>
+          
           <button type="button" className="btn btn-outline-primary" onClick={Login}>로그인</button>
           <button type="button" className="btn btn-outline-primary" onClick={Logout}>로그아웃</button>
 
