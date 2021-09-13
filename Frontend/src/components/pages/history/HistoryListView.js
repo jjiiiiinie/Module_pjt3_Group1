@@ -50,7 +50,9 @@ export default function HistoryListView({ data }) {
             <td className="order-date">
                 {data.createdAt}
             </td>
-
+            <td className="order-payment-plan">
+                {data.paymentPlan}
+            </td>
             <td className="order-status-select">
                 {
                     sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
