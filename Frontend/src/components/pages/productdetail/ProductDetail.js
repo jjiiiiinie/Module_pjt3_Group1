@@ -20,7 +20,7 @@ export default function ProductDetail() {
       setbooks(res.data);
     })
     .catch()
-  },[])
+  })
 
   return(
     <Fragment>
