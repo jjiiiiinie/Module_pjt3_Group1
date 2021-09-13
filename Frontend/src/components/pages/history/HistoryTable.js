@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export default function HistoryTable() {
   const date = new Date().toISOString().split('T')[0];
-  const [searchInfo, setSearchInfo] = useState([{ 'searchType': 'keyword' }])
+  const [searchInfo, setSearchInfo] = useState({ 'searchType': 'keyword' })
   const [searchType, setSearchType] = useState('keyword');
   const [historyDatas, setHistoryDatas] = useState([]);
 
@@ -22,7 +22,7 @@ export default function HistoryTable() {
 
     // 
     if (searchInfo.keyword)
-      axios.get(`order-service/orders/${type}`,
+      axios.post(`order-service/orders/${type}`,
         { value: `${searchInfo.keyword}` },
         {
           headers: {
