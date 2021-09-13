@@ -3,29 +3,38 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 export default function HistoryListView({ data }) {
-    const [newState, setNewState] = useState('');
+    const [newState, setNewState] = useState(data.orderState);
 
     const handleChange = e => {
         console.log(e.target.value);
         setNewState(e.target.value);
     }
 
-    console.log(data)
+    const stateToString = () => {
+        let string = '';
+        switch (newState) {
+            case 1: string = '결제 완료';
+            case 2: string = '배송 중';
+            case 3: string = '배송 완료';
+            default: break;
+        }
+        return string;
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
         // 선택된 status 백엔드에 반영 요청
         axios.put(`/order-service/orders/${data.orderId}/state/${newState}`,
-        {},
+            {},
             {
                 headers: {
                     'Authorization': sessionStorage.token
                 }
             })
             .then(res => {
-                console.log(res.data);
+                // console.log(res.data);
                 setNewState(res.data.orderState);
                 alert("변경")
-                window.location.href = '/history'
             })
             .catch((err) => {
                 console.log(err)
@@ -63,7 +72,7 @@ export default function HistoryListView({ data }) {
                             <option value="2">배송 중</option>
                             <option value="3">배송 완료</option>
                         </select> :
-                        `${newState}`
+                        `${stateToString}`
                 }
             </td>
             {
