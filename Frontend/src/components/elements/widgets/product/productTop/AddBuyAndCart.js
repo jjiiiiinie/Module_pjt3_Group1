@@ -13,11 +13,11 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
     })
     .catch(error => console.log(error));
   },[]); 
-
+  // console.dir(cartDatas)
   const handleCountAdd = () => {
     setCount(count+1)
   }
-
+  
   const handleCountMinus = () => {
     if(count == 1){
       alert('1개 미만으로는 주문할 수 없습니다.')
@@ -26,6 +26,7 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
       setCount(count-1)
     }
   }
+
   const handlePutCartList = (e) => {
     let url = '/cart-service/carts/'
     let Item = {
@@ -40,23 +41,28 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
         "Content-Type" : "application/json",
       }
     }
-    
-    // if (cartDatas.map(cartdata => cartdata.productId==productId)){
-    //   console.log(cartdata.productId)
-    //   console.log(productId)
-    //   alert("이미 장바구니에 담긴 상품입니다.")
-    //   return
-    // }
-    // else (
-      axios.post(url, Item, config)
-      .then((res) => {
-        alert("카트에 상품이 담겼습니다.")
-        console.log(res)
-      }).catch((err) => {
-        alert("상품 담기 실패")
-        console.log(err);
+    for (let i = 0 ; i < cartDatas.length; i++){
+      if(cartDatas[i].productId == productId){
+        alert("이미 장바구니에 담긴 상품입니다.")
+        return;
+      }
+    }
+
+    axios.post(url, Item, config)
+    .then((res) => {
+      alert("카트에 상품이 담겼습니다.")
+
+      axios.get(`/cart-service/carts/user/${sessionStorage.userId}`)
+      .then(res => {
+        setCartDatas(res.data)
+        console.dir(res.data)
       })
-    // )
+      .catch(error => console.log(error));
+
+    }).catch((err) => {
+      alert("상품 담기 실패")
+      console.log(err);
+    })
   }
 
   return(
@@ -67,7 +73,7 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
         <button className="inc qtybutton" onClick={() => handleCountAdd()}>+</button>
       </div>
       <div className="pro-details-cart btn-hover">
-        <button onClick={() => handlePutCartList()}>Add To Cart</button>
+        <button key={productId} onClick={() => handlePutCartList()}>Add To Cart</button>
       </div>
       <div className="pro-details-cart btn-hover ml-0"> 
         <a href="/">Buy Now</a>
