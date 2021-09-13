@@ -24,6 +24,7 @@ export default function HistoryListView({ data }) {
             .then(res => {
                 console.log(res.data);
                 alert("변경")
+                window.location.href = '/history'
             })
             .catch((err) => {
                 console.log(err)
