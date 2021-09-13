@@ -45,7 +45,6 @@ export default function CartTable() {
     setTotalPrice(sum);
     setCheckItems(Items)
   },[isCheck, cartDatas]);
-  console.log("check", checkItems)
 
   // const handleSelectAll = e => {
   //   setIsCheckAll(!isCheckAll);

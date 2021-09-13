@@ -17,9 +17,10 @@ export default function PaymentForm({ orderItems, orderInfo, setOrderInfo }) {
 			// 주소 합치기
 			if (orderInfo.addressMain && orderInfo.addressDetail)
 				var recipientAddress = orderInfo.addressMain + ' ' + orderInfo.addressDetail;
-			setOrderInfo({ ...orderInfo, recipientAddress: recipientAddress });
-			delete orderInfo['addressMain'];
-			delete orderInfo['addressDetail'];
+				setOrderInfo({ ...orderInfo, recipientAddress: recipientAddress });
+			// delete orderInfo['addressMain'];
+			// delete orderInfo['addressDetail'];
+
 
 			// 선택한 상품 목록 추가
 			setOrderInfo({ ...orderInfo, cartList: orderItems });
@@ -27,16 +28,17 @@ export default function PaymentForm({ orderItems, orderInfo, setOrderInfo }) {
 			let order = {
 				"cartList": orderItems,
 				"recipientName": orderInfo.recipientName,
-				"recipientAddress": orderInfo.recipientAddress,
+				"recipientAddress": orderInfo.addressMain + orderInfo.addressDetail,
 				"recipientPhone": orderInfo.recipientPhone,
 				"senderName": orderInfo.senderName,
 				"senderPhone": orderInfo.senderPhone,
 				"senderPassword": orderInfo.senderPassword,
-				"paymentPlan" : orderInfo.paymentPlan 
+				"paymentPlan" : 'debit'
 			}
 			var config = {
 				headers:{
 					"Content-Type" : "application/json",
+					'Authorization' : sessionStorage.token
 				}
 			}
 			axios.post(url, order, config)

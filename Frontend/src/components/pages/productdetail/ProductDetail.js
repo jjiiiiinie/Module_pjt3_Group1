@@ -12,7 +12,8 @@ export default function ProductDetail() {
   const newUrl = window.location.pathname.split('/')[2];
   
   const [ books, setbooks ] = useState([]);
-  
+  const categoryData = ['전체보기', '소설', '시/에세이', '경제/경영', '자기계발', '인문', '역사/문화', '종교', '정치/사회', '예술/대중문화', '과학', '기술/공학', '컴퓨터/IT']
+
   useEffect(() => {
     axios.get(`/catalog-service/catalogs/client/${newUrl}`)
     .then(res => {
@@ -48,14 +49,17 @@ export default function ProductDetail() {
 
             <div className="col-lg-6 col-md-6">
               <div className="product-details-content ml-70">
-                <div className="row">
-                  <div className="col-6"></div>
-                  <div className="col-6">
-                    <button><a href="/">주문내역</a></button>
-                    <button><a href="/productnew">수정</a></button>
-                    <button>삭제</button>
-                  </div>
-                </div>
+                {
+                  sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
+                    <div className="row">
+                      <div className="col-6"></div>
+                      <div className="col-6">
+                        <button><a href="/">주문내역</a></button>
+                        <button><a href="/productnew">수정</a></button>
+                        <button>삭제</button>
+                      </div>
+                    </div> : null 
+                }
                 {/* pro-det-rgt-top */}
                 <h2>{books.productName}</h2>
                 <div className="product-details-price">
@@ -73,19 +77,8 @@ export default function ProductDetail() {
                 />
                 {/* <ProDetRgtBottom /> */}
                 <div className="pro-details-meta">
-                  <span>Categories :</span>
-                  <ul>
-                    <li><a href="/shop-grid-standard"></a></li>
-                    
-                  </ul>
+                  <span>카테고리 : {categoryData[books.category]}</span>
                 </div>
-                <div className="pro-details-meta">
-                  <span>Tags :</span>
-                  <ul>
-                    <li><a href="/shop-grid-standard"></a></li>
-                  </ul>
-                </div>
-
               </div>
             </div>
           </div>

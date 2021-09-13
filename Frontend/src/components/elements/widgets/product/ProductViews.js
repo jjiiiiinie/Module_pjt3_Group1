@@ -2,54 +2,29 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import {Link} from 'react-router-dom';
 
-export default function ProductViews({sliceNumber, columnNumber}) {
+export default function ProductViews({sliceNumber, columnNumber, categoryName}) {
 
   const [ books, setbooks ] = useState([]);
-
+  
+  const categoryData = ['전체보기', '소설', '시/에세이', '경제/경영', '자기계발', '인문', '역사/문화', '종교', '정치/사회', '예술/대중문화', '과학', '기술/공학', '컴퓨터/IT']
+  
   useEffect(() => {
     axios.get('/catalog-service/catalogs')
     .then(res => {
-      setbooks(res.data);
+      if (categoryName != '전체보기') {
+        let result = res.data.filter(book => 
+          book.category == categoryData.indexOf(categoryName)
+          ) 
+          setbooks(result)
+        }
+      else {
+        setbooks(res.data)
+      }
     })
-    .catch()
-  },[])
-
-  // const newUrl = window.location.pathname.split('/')[2];
-  // const [ books, setbooks ] = useState([]);
-  
-  // useEffect(() => {
-  //   axios.get(`/catalog-service/catalogs/client/${newUrl}`)
-  //   .then(res => {
-  //     setbooks(res.data);
-  //   })
-  //   .catch()
-  // },[])
-
-  // const [ count, setCount ] = useState(1);
-
-  // const handlePutCartList = (e) => {
-  //   let url = '/cart-service/carts'
-  //   let Item = {
-  //     'productId' : productId,
-  //     'qty' : count,
-  //     'unitPrice' : unitPrice,
-  //     'totalPrice' : count * unitPrice,
-  //     'userId' : 1
-  //   }
-  //   var config = {
-  //     headers:{
-  //       "Content-Type" : "application/json",
-  //     }
-  //   }
-  //   axios.post(url, Item, config)
-  //   .then((res) => {
-  //     alert("카트에 상품이 담겼습니다.")
-  //     console.log(res)
-  //   }).catch((err) => {
-  //     alert("상품 담기 실패")
-  //     console.log(err);
-  //   })
-  // }
+    .catch((err) =>
+      console.log(err)
+    )
+  },[categoryName])
 
   const booklist = books.map((book) => {
     return (
@@ -63,31 +38,10 @@ export default function ProductViews({sliceNumber, columnNumber}) {
               <img className="default-img" src="assets/img/product/fashion/8.jpg" alt="" />
               <img className="hover-img" src="/assets/img/product/fashion/6.jpg" alt="" />
             </Link>
-            {/* 길이 꽉차게 */}
-            <div className="product-action">
-              <div className="pro-same-action pro-cart">
-                <button 
-                  disabled="" 
-                  className="active"
-                  // onClick = {handlePutCartList}
-                >
-                  BUY
-                </button>
-              </div>
-              {/* 관리자만 볼 수 있음, 해당 상품 Delete */}
-              <div className="pro-same-action pro-quickview">
-                <button
-                  value={book.productId}
-                  onClick=""
-                >
-                  <i className="las la-trash-alt"></i>
-                </button>
-              </div>
-            </div>
           </div>
           <div className="product-content text-center">
             <Link to={`/productdetail/${book.productId}`}></Link>
-            <p className="productTitle">{book.productName}</p>
+            <p className="productTitle"><b>[{categoryData[book.category]}]</b>{book.productName}</p>
             <div className="product-price">
               <span>{book.unitPrice}원</span>
             </div>
@@ -95,7 +49,7 @@ export default function ProductViews({sliceNumber, columnNumber}) {
         </div>
       </div>
     )}
-  )
+  ).slice(0, sliceNumber);
 
   return(
     <div>

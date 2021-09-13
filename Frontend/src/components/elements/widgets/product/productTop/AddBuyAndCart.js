@@ -26,7 +26,6 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
       setCount(count-1)
     }
   }
-  console.log("cartsss",cartDatas)
   const handlePutCartList = (e) => {
     let url = '/cart-service/carts/'
     let Item = {
@@ -41,11 +40,14 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
         "Content-Type" : "application/json",
       }
     }
-    if (cartDatas.map(cartdata => cartdata.productId==productId)){
-      alert("이미 장바구니에 담긴 상품입니다.")
-      return
-    }
-    else (
+    
+    // if (cartDatas.map(cartdata => cartdata.productId==productId)){
+    //   console.log(cartdata.productId)
+    //   console.log(productId)
+    //   alert("이미 장바구니에 담긴 상품입니다.")
+    //   return
+    // }
+    // else (
       axios.post(url, Item, config)
       .then((res) => {
         alert("카트에 상품이 담겼습니다.")
@@ -54,7 +56,7 @@ export default function AddBuyAndCart({stock, productId, unitPrice}) {
         alert("상품 담기 실패")
         console.log(err);
       })
-    )
+    // )
   }
 
   return(
