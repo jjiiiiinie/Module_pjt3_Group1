@@ -23,6 +23,7 @@ export default function HistoryListView({ data }) {
             })
             .then(res => {
                 console.log(res.data);
+                setNewState(res.data.orderState);
                 alert("변경")
                 window.location.href = '/history'
             })
@@ -51,16 +52,18 @@ export default function HistoryListView({ data }) {
             <td className="order-date">
                 {data.createdAt}
             </td>
-
+            <td className="order-payment-plan">
+                {data.paymentPlan}
+            </td>
             <td className="order-status-select">
                 {
                     sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
-                        <select value={data.orderState} onChange={handleChange}>
+                        <select value={newState} onChange={handleChange}>
                             <option value="1">결제 완료</option>
                             <option value="2">배송 중</option>
                             <option value="3">배송 완료</option>
                         </select> :
-                        `${data.orderState}`
+                        `${newState}`
                 }
             </td>
             {
