@@ -31,7 +31,7 @@ export default function ShipmentForm({ orderInfo, setOrderInfo }) {
 		const { name, value } = e.target;
 		setOrderInfo({ ...orderInfo, [name]: value });
 	}
-
+	
 	return (
 		<div className="card-body">
 			<div className="myaccount-info-wrapper">

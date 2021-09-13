@@ -4,7 +4,7 @@ import OrderListView from './OrderListView';
 
 export default function CartContainer({ orderItems }) {
 
-  const [ total, setTotal ] = useState([]);
+  const [ total, setTotal ] = useState();
 
   useEffect(() => {
     var sum = 0;
@@ -12,7 +12,7 @@ export default function CartContainer({ orderItems }) {
       sum += orderItem.totalPrice;
     })
     setTotal(sum)
-  },[])
+  })
 
   return (
     <div className="cart-main-area pt-90">

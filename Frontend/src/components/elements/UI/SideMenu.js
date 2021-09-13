@@ -1,5 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Fragment } from 'react';
 
 export default function SideMenu() {
 
@@ -45,17 +44,27 @@ export default function SideMenu() {
         
       <div className="col-xl-5 col-lg-4 col-md-6 col-10">
         <div className="header-right-wrap px-4">
-          {/* <Link to='/productlist'>SHOP</Link> */}
-          <a href="/productlist"><button type="button" className="btn btn-outline-dark">SHOP</button></a>
-          <a href="/order"><button type="button" className="btn btn-outline-dark">ORDER</button></a>
-          <a href="/productnew"><button type="button" className="btn btn-outline-dark">상품등록</button></a>
+          {/* <a href="/productlist"><button type="button" className="btn btn-outline-dark">쇼핑하기</button></a> */}
+          <a href="/cart"><button type="button" className="btn btn-outline-dark"><i className="fas fa-shopping-cart"></i></button></a>
+          {
+            sessionStorage.userId !== undefined ?  
+            <a href="/history"><button type="button" className="btn btn-outline-dark"><i className="fas fa-clipboard-list"></i></button></a> : null
+          }
+          {
+            sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
+              <a href="/productnew"><button type="button" className="btn btn-outline-dark">상품등록</button></a> : null
+          }
           {/* <button type="button" className="btn btn-outline-dark"><a href="/orderlist">주문내역</a></button> */}
-          <a href="/cart"><button type="button" className="btn btn-outline-dark">장바구니</button></a>
-          
-          <button type="button" className="btn btn-outline-primary" onClick={Login}>로그인</button>
-          <button type="button" className="btn btn-outline-primary" onClick={Logout}>로그아웃</button>
+          {
+            sessionStorage.userId !== undefined ?
+            <button type="button" className="btn btn-outline-primary" onClick={Logout}>로그아웃</button> :
+            <button type="button" className="btn btn-outline-primary" onClick={Login}>로그인</button> 
+          }
+          {
+            sessionStorage.userId !== undefined ?
+            <p>{sessionStorage.email}님</p> : null
+          }
 
-          {sessionStorage.email}님
           {/* {sideList} */}
           {/* 햄버거 */}
           <div className="same-style mobile-off-canvas d-block d-lg-none">

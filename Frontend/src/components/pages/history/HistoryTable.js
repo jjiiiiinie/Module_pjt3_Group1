@@ -19,12 +19,14 @@ export default function HistoryTable() {
     console.log(searchInfo.start);
     console.log(searchInfo.end);
     if (searchInfo.start !== undefined && searchInfo.end !== undefined)
-      axios.get(`order-service/orders/date`,
+      axios.post(`/order-service/orders/date`,
         {
           start: searchInfo.start,
           end: searchInfo.end,
+        },
+        {
           headers: {
-            Authorization: sessionStorage.token
+            'Authorization': sessionStorage.token
           }
         })
         .then(res => {
@@ -32,10 +34,13 @@ export default function HistoryTable() {
         })
         .catch()
     if (searchInfo.keyword !== undefined)
-      axios.get(`order-service/orders/${searchInfo.keyword}`,
+      axios.post(`order-service/orders/keyword`,
+        {
+          'value' : searchInfo.keyword
+        },
         {
           headers: {
-            Authorization: sessionStorage.token
+            'Authorization': sessionStorage.token
           }
         })
         .then(res => {
@@ -95,13 +100,14 @@ export default function HistoryTable() {
                 <thead>
                   <tr>
                     <th>주문 번호</th>
+                    <th>주문 UUID</th>
                     <th>주문인 ID</th>
                     <th>주문 상품</th>
                     <th>주문 수량</th>
                     <th>주문 일자</th>
                     <th>주문 상태</th>
                     {
-                      sessionStorage.userId !== undefined && sessionStorage.userId.includes('admin') ?
+                      sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
                         <th>주문 상태 변경</th> :
                         null
                     }

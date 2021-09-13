@@ -27,7 +27,8 @@ export default function ProductNewDetail() {
       [e.target.name]: e.target.value
     })
   }
-    
+  
+  
   const productcreate = (e) => {
     e.preventDefault();
     let url = '/catalog-service/catalogs'
@@ -49,10 +50,9 @@ export default function ProductNewDetail() {
       'isbn13' : values.isbn13
     }
     var config={
-      header:{
+      headers:{
         'Content-Type' : 'application/json',
-        // 'Authorization' : `Bearer ${sessionStorage.email}`
-        'email' : 'gggggglglglg'
+        'Authorization': sessionStorage.token
       }
     };
     axios.post(url, Product, config)
@@ -97,9 +97,19 @@ export default function ProductNewDetail() {
                 <label>책 카테고리</label>
                 <select className="form-select" aria-label="Default select example" name="category" value={values.category} onChange={handleChangeForm}>
                   <option selected>선택</option>
-                  <option value="1">인문</option>
-                  <option value="2">역사</option>
-                  <option value="3">과학</option>
+                  <option value="0">전체보기</option>
+                  <option value="1">소설</option>
+                  <option value="2">시/에세이</option>
+                  <option value="3">경제/경영</option>
+                  <option value="4">자기계발</option>
+                  <option value="5">인문</option>
+                  <option value="6">역사/문화</option>
+                  <option value="7">종교</option>
+                  <option value="8">정치/사회</option>
+                  <option value="9">예술/대중문화</option>
+                  <option value="10">과학</option>
+                  <option value="11">기술/공학</option>
+                  <option value="12">컴퓨터/IT</option>
                 </select>
               </div>
 

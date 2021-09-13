@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-// import footData from '../../../../db/footer.json';
 
 export default function FootAbout({footermenulist, footermenutitle}) {
 
