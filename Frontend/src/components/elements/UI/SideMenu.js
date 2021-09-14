@@ -42,7 +42,7 @@ export default function SideMenu() {
     <Fragment>    
       {/* <div className="col-xl-6 col-lg-8 d-none d-lg-block"> */}
         
-      <div className="col-xl-5 col-lg-4 col-md-6 col-10">
+      <div className="col-xl-5 col-lg-6 col-md-6 col-10">
         <div className="header-right-wrap px-4">
           {/* <a href="/productlist"><button type="button" className="btn btn-outline-dark">쇼핑하기</button></a> */}
           <a href="/cart"><button type="button" className="btn btn-outline-dark"><i className="fas fa-shopping-cart"></i></button></a>
@@ -52,12 +52,13 @@ export default function SideMenu() {
           }
           {
             sessionStorage.userId !== undefined && sessionStorage.email.includes('admin') ?
-              <a href="/productnew"><button type="button" className="btn btn-outline-dark">상품등록</button></a> : null
+              <a href="/productnew"><button type="button" className="btn btn-outline-dark"><i class="far fa-plus-square"></i></button></a> : null
+              // <a href="/productnew"><button type="button" className="btn btn-outline-dark">상품등록</button></a> : null
           }
           {/* <button type="button" className="btn btn-outline-dark"><a href="/orderlist">주문내역</a></button> */}
           {
             sessionStorage.userId !== undefined ?
-            <button type="button" className="btn btn-outline-primary" onClick={Logout}>로그아웃</button> :
+            <button type="button" className="btn btn-outline-primary" onClick={Logout}><i class="fas fa-sign-out-alt"></i></button> :
             <button type="button" className="btn btn-outline-primary" onClick={Login}>로그인</button> 
           }
           {
