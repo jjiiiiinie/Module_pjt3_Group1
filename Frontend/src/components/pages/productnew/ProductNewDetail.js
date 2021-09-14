@@ -90,6 +90,12 @@ export default function ProductNewDetail() {
                   </div>
                   <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
                 </div>
+                {/* <form name="form" method="post" action="http://localhost:8080/board" enctype="multipart/form-data">
+                  <input name="user" value="Pyo"/>
+                  <input name="content" value="Content"/>
+                  <input type="file" name="files" multiple="multiple"/>
+                  <input type="submit" id="submit" value="전송"/>
+                </form> */}
                 <button>이미지 등록</button>
               </div>
               <div>
