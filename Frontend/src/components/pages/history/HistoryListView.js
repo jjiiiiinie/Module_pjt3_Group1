@@ -10,16 +10,7 @@ export default function HistoryListView({ data }) {
         setNewState(e.target.value);
     }
 
-    const stateToString = () => {
-        let string = '';
-        switch (newState) {
-            case 1: string = '결제 완료';
-            case 2: string = '배송 중';
-            case 3: string = '배송 완료';
-            default: break;
-        }
-        return string;
-    }
+    const state = ["결제 완료", "배송중", "배송 완료"]
 
     const handleSubmit = e => {
         e.preventDefault();
@@ -72,7 +63,7 @@ export default function HistoryListView({ data }) {
                             <option value="2">배송 중</option>
                             <option value="3">배송 완료</option>
                         </select> :
-                        `${stateToString}`
+                        <p>{state[newState-1]}</p>
                 }
             </td>
             {

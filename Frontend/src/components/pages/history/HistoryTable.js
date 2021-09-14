@@ -110,8 +110,8 @@ export default function HistoryTable() {
                 <thead>
                   <tr>
                     <th>주문 번호</th>
-                    <th>주문 UUID</th>
                     <th>주문인 ID</th>
+                    <th>주문 UUID</th>
                     <th>주문 상품</th>
                     <th>주문 수량</th>
                     <th>주문 일자</th>
