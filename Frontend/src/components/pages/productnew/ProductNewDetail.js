@@ -20,7 +20,7 @@ export default function ProductNewDetail() {
     isbn10 : '',
     isbn13 : ''
   })
-
+  
   const handleChangeForm = (e) => {
     setValues({
       ...values,
@@ -28,12 +28,43 @@ export default function ProductNewDetail() {
     })
   }
   
+  // const [ imgBase64, setImgBase64 ] = useState([])
+  // const [ imgFile, setImgFile ] = useState(null)
+
+  // const handleChangeFile = (event) => {
+  //   console.log(event.target.files)
+  //   setImgFile(event.target.files);
+  //   // fd.append("file", event.target.files)
+  //   setImgBase64([]);
+  //   for(var i=0;i<event.target.files.length;i++){
+  //     if (event.target.files[i]) {
+  //       let reader = new FileReader();
+  //       reader.readAsDataURL(event.target.files[i]); // 1. 파일을 읽어 버퍼에 저장합니다.
+  //       // 파일 상태 업데이트
+  //       reader.onloadend = () => {
+  //         // 2. 읽기가 완료되면 아래코드가 실행됩니다.
+  //         const base64 = reader.result;
+  //         console.log(base64)
+  //         if (base64) {
+  //         //  images.push(base64.toString())
+  //         var base64Sub = base64.toString()
+            
+  //         setImgBase64(imgBase64 => [...imgBase64, base64Sub]);
+  //         //  setImgBase64(newObj);
+  //           // 파일 base64 상태 업데이트
+  //         //  console.log(images)
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
   
   const productcreate = (e) => {
     e.preventDefault();
     let url = '/catalog-service/catalogs'
     let Product = {
       'productName' : values.productName,
+      // 'files' : imgBase64[0],
       'category' : values.category,
       'writer' : values.writer,
       'translator' : values.translator,
@@ -51,6 +82,7 @@ export default function ProductNewDetail() {
     }
     var config={
       headers:{
+        // 'Content-Type' : 'multipart/form-data',
         'Content-Type' : 'application/json',
         'Authorization': sessionStorage.token
       }
@@ -79,7 +111,7 @@ export default function ProductNewDetail() {
                   </div>
                 </div>
               </div>
-              <div className="product-large-image-wrapper">
+              {/* <div className="product-large-image-wrapper">
                 <div className="swiper-container swiper-container-fade swiper-container-initialized swiper-container-horizontal">
                   <div className="swiper-wrapper">
                     <div classN ame="swiper-slide swiper-slide-duplicate swiper-slide-duplicate-next" data-swiper-slide-index="1" style={{width: "0px", opacity: "1"}}>
@@ -89,15 +121,14 @@ export default function ProductNewDetail() {
                     </div>
                   </div>
                   <span className="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-                </div>
-                {/* <form name="form" method="post" action="http://localhost:8080/board" enctype="multipart/form-data">
-                  <input name="user" value="Pyo"/>
-                  <input name="content" value="Content"/>
-                  <input type="file" name="files" multiple="multiple"/>
-                  <input type="submit" id="submit" value="전송"/>
-                </form> */}
-                <button>이미지 등록</button>
-              </div>
+                </div> */}
+                {/* <div>
+                  <label className="file-upload" id="file-drag">
+                    이미지 등록
+                  </label>
+                  <input type="file" onChange={handleChangeFile} />
+                </div> */}
+              {/* </div> */}
               <div>
                 <label>책 카테고리</label>
                 <select className="form-select" aria-label="Default select example" name="category" value={values.category} onChange={handleChangeForm}>
@@ -155,14 +186,14 @@ export default function ProductNewDetail() {
                   <input type="text" className="form-control" placeholder="입력해주세요." name="unitPrice" value={values.unitPrice} onChange={handleChangeForm}/>
                 </div>
               </div>
+            </div>
+            <div className="col-lg-6 col-md-6">
               <div>
                 <label>배송비</label>
                 <div className="input-group mb-3">
                   <input type="text" className="form-control" placeholder="입력해주세요." name="deliveryFee" value={values.deliveryFee} onChange={handleChangeForm}/>
                 </div>
               </div>
-            </div>
-            <div className="col-lg-6 col-md-6">
               <div>
                 <label>재고</label>
                 <div className="input-group mb-3">
